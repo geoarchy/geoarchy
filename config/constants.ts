@@ -1,1 +1,1 @@
-export const MAP_DISPLAYS_NAMESPACE = 'mapDisplays';
+export const MAP_DISPLAYS_NAMESPACE = "mapDisplays";

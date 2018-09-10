@@ -1,5 +1,4 @@
 import * as React from "react";
-import ReactDOM from "react-dom";
 import * as mapboxgl from "mapbox-gl";
 import { mapDisplay1 } from "../../fixtures";
 
@@ -24,7 +23,7 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
   style: any;
   layers: any;
   props: MapDisplayProps;
-  static defaultProps = mapDisplay1
+  static defaultProps = mapDisplay1;
   constructor(props: MapDisplayProps) {
     super(props);
     this.state = {
@@ -102,7 +101,15 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
           <div className={`mapboxgl-ctrl-${region}`}>
             {regionCs.map((C, n) => {
               const ResultComponent = componentMap[C.type];
-              return <ResultComponent map={this.map} mapbox={this.mapbox} key={`${C.type}-${n}`} {...C} {...this.state.style} />;
+              return (
+                <ResultComponent
+                  map={this.map}
+                  mapbox={this.mapbox}
+                  key={`${C.type}-${n}`}
+                  {...C}
+                  {...this.state.style}
+                />
+              );
             })}
           </div>
         );

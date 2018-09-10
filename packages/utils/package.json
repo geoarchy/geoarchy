@@ -1,7 +1,7 @@
 {
-    "name": "@geoarchy/utils",
-    "version": "0.0.1",
-    "description": "utils",
-    "main": "index.js",
-    "license": "MIT"
+  "name": "@geoarchy/utils",
+  "version": "0.0.1",
+  "description": "utils",
+  "main": "index.js",
+  "license": "MIT"
 }

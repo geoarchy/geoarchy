@@ -2,7 +2,7 @@ import React from "react";
 import { Field } from "formik";
 import { Flex } from "reakit";
 
-export default (props) => (
+export default props => (
   <fieldset>
     <legend>
       <h3>Components</h3>

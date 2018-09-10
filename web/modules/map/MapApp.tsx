@@ -1,12 +1,12 @@
-import React from 'react';
+import * as React from "react";
 
 export default ({ children }) => (
   <main>
     {children}
     <style jsx global>{`
       * {
-        font-family: Menlo, Monaco, 'Lucida Console', 'Liberation Mono',
-          'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New',
+        font-family: Menlo, Monaco, "Lucida Console", "Liberation Mono",
+          "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New",
           monospace, serif;
       }
       body {
@@ -38,11 +38,12 @@ export default ({ children }) => (
         background-color: #1b9db7;
         transition: background-color 0.3s;
       }
-      button:focus, button:hover {
+      button:focus,
+      button:hover {
         text-decoration: underline;
         outline: none;
         cursor: pointer;
       }
     `}</style>
   </main>
-)
+);

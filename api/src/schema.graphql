@@ -1,168 +1,168 @@
 enum CONTROL_REGION {
-    TOP_RIGHT
-    TOP_LEFT
-    BOTTOM_RIGHT
-    BOTTOM_LEFT
+  TOP_RIGHT
+  TOP_LEFT
+  BOTTOM_RIGHT
+  BOTTOM_LEFT
 }
 input ILayerFilterOption {
-    value: String
-    label: String
+  value: String
+  label: String
 }
 
 type TLayerFilterOption {
-    value: String
-    label: String
+  value: String
+  label: String
 }
 
 input IPopupFields {
-    title: String
-    link: String
-    image: String
-    description: String
+  title: String
+  link: String
+  image: String
+  description: String
 }
 
 type TPopupFields {
-    title: String
-    link: String
-    image: String
-    description: String
+  title: String
+  link: String
+  image: String
+  description: String
 }
 
 input IPopupSettings {
-    centerOnSelect: Boolean
-    fields: IPopupFields
+  centerOnSelect: Boolean
+  fields: IPopupFields
 }
 
 type TPopupSettings {
-    centerOnSelect: Boolean
-    fields: TPopupFields
+  centerOnSelect: Boolean
+  fields: TPopupFields
 }
 
 input ILayerFilter {
-    options: [ILayerFilterOption]
-    on: String # field the filter happens on
-    operator: String  # defaults to '='
-    defaultWidget: String
+  options: [ILayerFilterOption]
+  on: String # field the filter happens on
+  operator: String # defaults to '='
+  defaultWidget: String
 }
 
 type TLayerFilter {
-    options: [TLayerFilterOption]
-    on: String # field the filter happens on
-    operator: String  # defaults to '='
-    defaultWidget: String
+  options: [TLayerFilterOption]
+  on: String # field the filter happens on
+  operator: String # defaults to '='
+  defaultWidget: String
 }
 
 input ILayerGroup {
-    hideOnLoad: Boolean
-    label: String!
-    id: String!
-    layers: [String]!
-    filters: [ILayerFilter]
-    popup: IPopupSettings
+  hideOnLoad: Boolean
+  label: String!
+  id: String!
+  layers: [String]!
+  filters: [ILayerFilter]
+  popup: IPopupSettings
 }
 
 type TLayerGroup {
-    hideOnLoad: Boolean
-    label: String!
-    id: String!
-    layers: [String]
-    filters: [TLayerFilter]
-    popup: TPopupSettings
+  hideOnLoad: Boolean
+  label: String!
+  id: String!
+  layers: [String]
+  filters: [TLayerFilter]
+  popup: TPopupSettings
 }
 
 input IMapComponent {
-    type: String!
-    ariaLabel: String!
-    region: String!
+  type: String!
+  ariaLabel: String!
+  region: String!
 }
 
 type TMapComponent {
-    type: String!
-    ariaLabel: String!
-    region: String!
+  type: String!
+  ariaLabel: String!
+  region: String!
 }
 
 input IMapOptions {
-    container: String!
-    style: String!
+  container: String!
+  style: String!
 }
 
 type TMapOptions {
-    container: String!
-    style: String!
+  container: String!
+  style: String!
 }
 
 type TMapPayload {
-    id: ID!
-    title: String!
-    options: TMapOptions
-    layerGroups: [TLayerGroup!]
-    components: [TMapComponent!]
+  id: ID!
+  title: String!
+  options: TMapOptions
+  layerGroups: [TLayerGroup!]
+  components: [TMapComponent!]
 }
 
 type AccountPayload {
-    email: String
-    id: String
-    orgName: String
-    firstName: String
-    lastName: String
-    mapDisplays: [TMapPayload!]
-    mapboxTokenStatus: Boolean
+  email: String
+  id: String
+  orgName: String
+  firstName: String
+  lastName: String
+  mapDisplays: [TMapPayload!]
+  mapboxTokenStatus: Boolean
 }
 
 input LoginAccountData {
-    email: String!
-    password: String!
+  email: String!
+  password: String!
 }
 input CreateAccountData {
-    email: String!
-    password: String!
-    firstName: String
-    lastName: String
-    orgName: String
+  email: String!
+  password: String!
+  firstName: String
+  lastName: String
+  orgName: String
 }
 
 type TMapDisplay {
-    title: String!
-    options: TMapOptions
-    layerGroups: [TLayerGroup!]
-    components: [TMapComponent!]
+  title: String!
+  options: TMapOptions
+  layerGroups: [TLayerGroup!]
+  components: [TMapComponent!]
 }
 
 input IMapDisplay {
-    id: String!
-    title: String
-    published: Boolean
-    options: IMapOptions
-    layerGroups: [ILayerGroup]
-    components: [IMapComponent]
+  id: String!
+  title: String
+  published: Boolean
+  options: IMapOptions
+  layerGroups: [ILayerGroup]
+  components: [IMapComponent]
 }
 
 input INewMapDisplay {
-    title: String!
-    options: IMapOptions
-    published: Boolean
-    layerGroups: [ILayerGroup]
-    components: [IMapComponent]
+  title: String!
+  options: IMapOptions
+  published: Boolean
+  layerGroups: [ILayerGroup]
+  components: [IMapComponent]
 }
 
 type MutationResult {
-    success: Boolean!
+  success: Boolean!
 }
 
 type UserPayload {
-    token: String!
-    account: AccountPayload!
+  token: String!
+  account: AccountPayload!
 }
 
 type Query {
-    account(email: String): AccountPayload
-    map(id: String, username: String): TMapPayload
+  account(email: String): AccountPayload
+  map(id: String, username: String): TMapPayload
 }
 
 type Mutation {
-    login(data: LoginAccountData): UserPayload
-    createAccount(data: CreateAccountData): UserPayload
-    createMapDisplay(data: INewMapDisplay): TMapPayload
-    updateMapDisplay(data: IMapDisplay): TMapPayload
+  login(data: LoginAccountData): UserPayload
+  createAccount(data: CreateAccountData): UserPayload
+  createMapDisplay(data: INewMapDisplay): TMapPayload
+  updateMapDisplay(data: IMapDisplay): TMapPayload
 }

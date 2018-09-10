@@ -1,15 +1,17 @@
 import * as DatabaseClient from "s3-db";
 import { fsString } from "@geoarchy/utils";
 
-const short = require('short-uuid');
+const short = require("short-uuid");
 
 const translator = short();
 
 const defaultCollection = {
   id: {
     //Passing in the document is new with 2.0
-    generator: document => { return translator.new()},
-    propertyName: 'id'
+    generator: document => {
+      return translator.new();
+    },
+    propertyName: "id"
   },
   onlyUpdateOnMD5Change: true,
   collideOnMissmatch: false,
@@ -20,25 +22,27 @@ const defaultCollection = {
 
 const accountCollection = {
   id: {
-    generator: document => { return fsString(document.email) },
-    propertyName: 'id'
+    generator: document => {
+      return fsString(document.email);
+    },
+    propertyName: "id"
   },
   pageSize: 100
-}
+};
 
 export interface Database {
-  _db: DatabaseClient
-  accounts: DatabaseClient.Collection
-  maps: DatabaseClient.Collection
-  getAccountMapCollection: Function
-  accountMaps: DatabaseClient.Collection
+  _db: DatabaseClient;
+  accounts: DatabaseClient.Collection;
+  maps: DatabaseClient.Collection;
+  getAccountMapCollection: Function;
+  accountMaps: DatabaseClient.Collection;
 }
 
 class DataService {
-  _db: DatabaseClient
-  _config: any
-  _collectionNames: string[]
-  maps: DatabaseClient.Collection
+  _db: DatabaseClient;
+  _config: any;
+  _collectionNames: string[];
+  maps: DatabaseClient.Collection;
   constructor(config) {
     this._config = config;
     this._collectionNames = [];
@@ -53,11 +57,11 @@ class DataService {
       self[collection] = await this.collection(collection);
     });
 
-    await Promise.all(getCollectionNames)
+    await Promise.all(getCollectionNames);
   }
 
-  async getAccountMapCollection(accountId, path = 'account') {
-    console.log({accountId})
+  async getAccountMapCollection(accountId, path = "account") {
+    console.log({ accountId });
     this[`${path}Maps`] = this.maps.subCollection(accountId);
   }
 
@@ -65,7 +69,7 @@ class DataService {
     return {
       db: {
         name: "geoarchy",
-        namePattern: '${db.name}.${db.environment}-${name}', // name is passed in, db.* comes from the configuration.
+        namePattern: "${db.name}.${db.environment}-${name}" // name is passed in, db.* comes from the configuration.
       },
       collections: {
         default: defaultCollection,
@@ -81,25 +85,25 @@ class DataService {
           encryption: false
         }
       }
-    }
-  }
-  
-  async collection(name) {
-    return this._db.getCollection(name)
+    };
   }
 
-  async findAndGetData(collectionName, ...findArgs){
+  async collection(name) {
+    return this._db.getCollection(name);
+  }
+
+  async findAndGetData(collectionName, ...findArgs) {
     let collection = await this.collection(collectionName);
-    let results = await collection.find(...findArgs || null);
-    return Promise.all(results.map(result => result.getDocument()))
+    let results = await collection.find(...(findArgs || null));
+    return Promise.all(results.map(result => result.getDocument()));
   }
 
   async createUnique(id, data, collectionName) {
     let collection = await this.collection(collectionName);
     const exists = await collection.exists(id);
     if (exists) {
-      return { 
-        error: `${collectionName} ID is not unique` 
+      return {
+        error: `${collectionName} ID is not unique`
       };
     }
     // thus, we should be able to ensure create document
@@ -107,4 +111,4 @@ class DataService {
   }
 }
 
-export { DataService }
+export { DataService };

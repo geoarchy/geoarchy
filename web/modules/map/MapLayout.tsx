@@ -1,24 +1,24 @@
-import * as React from 'react';
+import * as React from "react";
 
-import Head from 'next/head'
+import Head from "next/head";
 
 interface LayoutProps {
-    title: string
-    children: React.ReactNode
+  title: string;
+  children: React.ReactNode;
 }
 
-const MapLayout : React.SFC < LayoutProps > = ({ 
-    children, 
-    title = 'This is the default title' 
+const MapLayout: React.SFC<LayoutProps> = ({
+  children,
+  title = "This is the default title"
 }) => (
   <div>
     <Head>
-      <title>{ title }</title>
-      <meta charSet='utf-8' />
-      <meta name='viewport' content='initial-scale=1.0, width=device-width' />
+      <title>{title}</title>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
-    { children }
+    {children}
   </div>
-)
+);
 
-export default MapLayout
+export default MapLayout;

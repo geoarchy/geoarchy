@@ -1,11 +1,9 @@
-import React from "react";
-import { Field } from "formik";
-import { Flex, Group } from "reakit";
+import * as React from "react";
 
 export default class MapZoom extends React.Component {
-    constructor(props, context) {
-        super(props, context)
-    }
+  constructor(props, context) {
+    super(props, context);
+  }
   render() {
     return (
       <div className="mapboxgl-ctrl mapboxgl-ctrl-group">
