@@ -1,0 +1,88 @@
+# Try to write your query here
+mutation LoginUser {
+	createUser: createAccount(data: { email: "bob@bob.com", password: "bob"}){
+    account{
+      id
+    }
+		token
+  }
+  login: login(data: { email: "bob@bob.com", password: "bob"}){
+    account{
+      id
+    }
+		token
+  }
+}
+
+mutation CreateMap{
+	map: updateMapDisplay(data: {
+		id: "267b6e56-5999-4e9c-872e-95e12c23311b",
+    title: "My Embedded Mape",
+    options: {
+      container: "nj23h4jk23h4",
+      style: "mapbox://styles/guanacaste/cjj079axn0aqu2so55fx6ln2x"
+    },
+    layerGroups: [
+      {
+        hideOnLoad: true,
+        label: "Sectores",
+        id: "group-sectores",
+        layers: ["toggle-sectores", "sectores-nombres"]
+      },
+      {
+        hideOnLoad: true,
+        label: "Ecosistemas",
+        id: "group-ecosistemas",
+        layers: ["toggle-ecosistemas"],
+      },
+      {
+      hideOnLoad: true,
+      label: "Turismo",
+      id: "group-turismo",
+      layers: ["toggle-turismo"],
+    },
+    {
+      hideOnLoad: true,
+      label: "Unesco",
+      id: "group-unesco",
+      layers: ["toggle-unesco"],
+    }
+    ]
+  }){
+  	id,
+    options {
+      container
+      style
+    }
+    components {
+      type
+			region
+    }
+    layerGroups {
+      hideOnLoad
+			label
+			id
+			layers
+    }
+  }
+}
+
+query getMap{
+  map(id: "9bb27349-7510-4c16-b8b6-8e2e181a025f", username: "bob_4@bob.com"){
+    id,
+    options {
+      container
+      style
+    }
+    components {
+      type
+			region
+    }
+    layerGroups {
+      hideOnLoad
+			label
+			id
+			layers
+    }
+  }
+}
