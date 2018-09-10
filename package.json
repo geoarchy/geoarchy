@@ -1,0 +1,23 @@
+{
+  "name": "geoarchy",
+  "version": "0.0.1",
+  "description": "map ui platform",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "api",
+      "packages/*"
+    ],
+    "nohoist": [
+      "web"
+    ]
+  },
+  "devDependencies": {
+    "eslint": "^5.4.0",
+    "oao": "^1.5.1",
+    "prettier": "^1.14.2",
+    "prettier-eslint": "^8.8.2"
+  }
+}
