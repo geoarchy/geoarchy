@@ -7,14 +7,13 @@ export const account = (parent, args, ctx, info) => {
 };
 export const map = async (parent, args, ctx, info) => {
   // if (!ctx.db.accountMaps) {
-  //     await ctx.db.getAccountMapCollection(ctx.request.tokenData.userId)
+  //   await ctx.db.getAccountMapCollection(ctx.request.tokenData.userId);
   // }
-  await ctx.db.accountMaps(args.id);
+  // await ctx.db.accountMaps(args.id);
   const result = await fetch(
     `https://s3.amazonaws.com/geoarchy.dev-maps/${args.username}/${fsString(
       args.id
     )}`
   );
-  console.log(result);
   return result.json();
 };

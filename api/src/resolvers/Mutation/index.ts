@@ -1,4 +1,5 @@
 import * as bcrypt from "bcryptjs";
+import * as mergeDeep from "merge-deep";
 import { fsString } from "@geoarchy/utils";
 import { Context } from "../../typings";
 import { hashPass, getUserData, signToken } from "../utils";
@@ -14,7 +15,9 @@ export const updateMapDisplay = async (parent, args, ctx: Context, info) => {
   if (!ctx.db.accountMaps) {
     await ctx.db.getAccountMapCollection(ctx.request.tokenData.userId);
   }
-  return ctx.db.accountMaps.saveDocument(args.data);
+  let previousVersion = await ctx.db.accountMaps.getDocument(args.data.id);
+
+  return ctx.db.accountMaps.saveDocument(mergeDeep(previousVersion, args.data));
 };
 
 export const createAccount = async (parent, args, ctx: Context, info) => {

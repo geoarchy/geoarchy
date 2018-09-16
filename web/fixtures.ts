@@ -2,7 +2,7 @@ export const mapDisplay1 = {
   title: "My Embedded Map",
   options: {
     container: "nj23h4jk23h4",
-    style: "mapbox://styles/guanacaste/cjj079axn0aqu2so55fx6ln2x"
+    style: "mapbox://styles/rerooting2040/cjlx4wwx01cs92sn1jvgjy793"
   },
   published: true,
   components: [

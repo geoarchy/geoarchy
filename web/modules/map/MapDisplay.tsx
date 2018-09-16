@@ -2,7 +2,7 @@ import * as React from "react";
 import * as mapboxgl from "mapbox-gl";
 import { mapDisplay1 } from "../../fixtures";
 
-interface MapDisplayProps {
+interface MapDisplayOptions {
   accessToken: string;
   container: string;
   style: string;
@@ -12,6 +12,9 @@ interface MapDisplayProps {
   maxZoom?: number;
   debugMode: boolean;
 }
+interface MapDisplayProps {
+  options: MapDisplayOptions;
+}
 
 interface MapDisplayState {
   style: any;
@@ -19,6 +22,7 @@ interface MapDisplayState {
 }
 
 class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
+  mapbox: mapboxgl;
   map: mapboxgl;
   style: any;
   layers: any;
@@ -37,7 +41,7 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
     );
   }
 
-  forLayerInGroups(layerGroups, fn, layerFilter) {
+  forLayerInGroups(layerGroups, fn, layerFilter = null) {
     if (layerFilter) {
       layerGroups.forEach(layerGroup => {
         layerGroup.layers && layerGroup.layers.filter(layerFilter).forEach(fn);
@@ -52,7 +56,7 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
     this.mapbox = require("mapbox-gl");
     this.mapbox.accessToken =
       this.props.accessToken ||
-      "pk.eyJ1IjoiZ3VhbmFjYXN0ZSIsImEiOiJjamowNzhuYnAwZXU2M2txczhsc21mbDVsIn0.amJMu3O1jfjcbg-B1qC7ww";
+      "pk.eyJ1IjoicmVyb290aW5nMjA0MCIsImEiOiJjamx4NHZreHIwcGhkM3FwZ2F5ZWxqYTM4In0.djRgaveFi1gWzxFOrLiDJQ";
     this.map = new this.mapbox.Map(this.props.options);
 
     // firing before the map loads, data will
@@ -130,7 +134,7 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
           }
         `}</style>
         <div className="mapbox-control-container">
-          {this.renderMapboxControlPortals(this.props)}
+          {this.renderMapboxControlPortals()}
         </div>
         <div className="map-display" id={this.props.options.container} />
       </div>

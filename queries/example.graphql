@@ -41,6 +41,25 @@ mutation CreateMap {
           label: "Turismo"
           id: "group-turismo"
           layers: ["toggle-turismo"]
+          filters: [
+            {
+              on: "symbol"
+              defaultWidget: "list"
+              options: [
+                { label: "Touristas", value: "turismo" }
+                { label: "Estaciones", value: "estaciones" }
+              ]
+            }
+          ]
+          popup: {
+            centerOnSelect: true
+            fields: {
+              title: "feature.properties.Estación"
+              link: "feature.properties.link"
+              image: "feature.properties.Image"
+              description: "feature.properties.description"
+            }
+          }
         }
         {
           hideOnLoad: true

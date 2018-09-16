@@ -36,9 +36,9 @@ server.express.post(server.options.endpoint, async (req, res, next) =>
   getUser(req, res, next, db)
 );
 
-// const settings = {
-//   playground: process.NODE_ENV !== 'production' && ''
-// }
-server.start(({ port }) =>
+const settings = {
+  port: 8080
+}
+server.start(settings, ({ port }) =>
   console.log(`Server is running on http://localhost:${port}`)
 );

@@ -31,7 +31,6 @@ export default ({ children }) => (
         color: white;
         display: flex;
         padding: 5px 7px;
-        font-size: 1.2rem;
         display: inline-block;
       }
       button:active {

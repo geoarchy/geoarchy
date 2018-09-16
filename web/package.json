@@ -1,6 +1,6 @@
 {
   "name": "@geoarchy/web",
-  "version": "2.0.0",
+  "version": "0.0.1",
   "scripts": {
     "dev": "ts-node -r dotenv/config server.ts",
     "build": "next build",
@@ -9,6 +9,8 @@
   "dependencies": {
     "@zeit/next-typescript": "^1.1.0",
     "apollo-boost": "^0.1.3",
+    "apollo-client": "^2.4.1",
+    "aws-appsync": "^1.3.4",
     "dotenv": "^6.0.0",
     "formik": "^1.2.0",
     "graphql": "0.13.2",
@@ -21,11 +23,13 @@
     "react": "^16.4.2",
     "react-apollo": "2.1.0",
     "react-dom": "^16.4.2",
+    "react-icons": "^3.0.5",
     "reakit": "^0.14.6"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "7.0.0-beta.42",
     "nodemon": "^1.18.4",
     "ts-node": "^7.0.1"
   }
