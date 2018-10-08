@@ -1,8 +1,16 @@
+import { TMapDisplay } from '@geoarchy/types'
 import * as bcrypt from "bcryptjs";
-import * as mergeDeep from "merge-deep";
 import { fsString } from "@geoarchy/utils";
 import { Context } from "../../typings";
 import { hashPass, getUserData, signToken } from "../utils";
+
+function hasDuplicates(array) {
+  return (new Set(array)).size !== array.length;
+}
+
+function hasDuplicatesIds(array) {
+ return !!array && array.length > 0 && hasDuplicates(array.map(({ id }) => id))
+}
 
 export const createMapDisplay = async (parent, args, ctx: Context, info) => {
   if (!ctx.db.accountMaps) {
@@ -11,13 +19,22 @@ export const createMapDisplay = async (parent, args, ctx: Context, info) => {
   return ctx.db.accountMaps.saveDocument(args.data);
 };
 
-export const updateMapDisplay = async (parent, args, ctx: Context, info) => {
+export const updateMapDisplay = async (parent, args: { data: TMapDisplay }, ctx: Context, info) => {
   if (!ctx.db.accountMaps) {
     await ctx.db.getAccountMapCollection(ctx.request.tokenData.userId);
   }
-  let previousVersion = await ctx.db.accountMaps.getDocument(args.data.id);
 
-  return ctx.db.accountMaps.saveDocument(mergeDeep(previousVersion, args.data));
+  if(hasDuplicatesIds(args.data.layerGroups)){
+    throw Error("layer group id already exists")
+  }
+
+  if(hasDuplicatesIds(args.data.components)){
+    throw Error("component id already exists")
+  }
+
+  // let previousVersion = await ctx.db.accountMaps.getDocument(args.data.id);
+  console.log(info)
+  return ctx.db.accountMaps.saveDocument(args.data);
 };
 
 export const createAccount = async (parent, args, ctx: Context, info) => {

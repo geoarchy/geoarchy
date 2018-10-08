@@ -1,32 +1,32 @@
 import * as React from "react";
 import * as mapboxgl from "mapbox-gl";
+import { TMapDisplay } from "@geoarchy/types";
 import { mapDisplay1 } from "../../fixtures";
 
-interface MapDisplayOptions {
-  accessToken: string;
-  container: string;
-  style: string;
-  center: [number, number];
-  zoom: number;
-  minZoom?: number;
-  maxZoom?: number;
-  debugMode: boolean;
+interface Process {
+  browser: boolean
 }
-interface MapDisplayProps {
-  options: MapDisplayOptions;
+
+declare var process: Process
+
+interface MapDisplayProps extends TMapDisplay {
+  accessToken: string;
 }
 
 interface MapDisplayState {
   style: any;
   layers: any;
+  componentsCanRender: boolean,
 }
 
 class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
-  mapbox: mapboxgl;
-  map: mapboxgl;
+  mapbox: any;
+  map: { initialLoaded: Boolean } & mapboxgl.Map;
   style: any;
   layers: any;
   props: MapDisplayProps;
+  state: { style: any; layers: any; componentsCanRender: boolean; };
+
   static defaultProps = mapDisplay1;
   constructor(props: MapDisplayProps) {
     super(props);
@@ -51,6 +51,7 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
     layerGroups.forEach(layerGroup => layerGroup.layers.forEach(fn));
     return;
   }
+
   initializeMap() {
     // only shows up in the browser bundle
     this.mapbox = require("mapbox-gl");
@@ -81,17 +82,14 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
       this.setState({ componentsCanRender: true });
     });
   }
+
   componentDidMount() {
     // DOM has map id
     if (process.browser) {
       this.initializeMap();
     }
   }
-  componentDidUpdate(prevProps) {
-    if (process.browser && this.props.editor && this.props !== prevProps) {
-      //debounce(this.initializeMap, 3000)
-    }
-  }
+
   renderMapboxControlPortals() {
     const componentMap = {
       MapCompass: require("./components/MapCompass").default,

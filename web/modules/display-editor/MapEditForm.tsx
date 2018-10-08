@@ -1,6 +1,7 @@
 import * as React from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, FormikProps, InjectedFormikProps } from "formik";
 import { Button, Flex, Block, Group, Tabs } from "reakit";
+import { TMapDisplay } from '@geoarchy/types';
 
 import MapApp from "../map/MapApp";
 import MapDisplay from "../map/MapDisplay";
@@ -27,17 +28,17 @@ const FormTabContainer = props => (
           </Tabs.Tab>
         </Tabs>
         <Tabs.Panel fade slideIn tab="options" {...tabs}>
-          <Block fade>
+          <Block>
             <MapForms.OptionsForm fade {...props} />
           </Block>
         </Tabs.Panel>
         <Tabs.Panel fade tab="ui" {...tabs}>
-          <Block fade>
+          <Block>
             <MapForms.UIForm fade {...props} />
           </Block>
         </Tabs.Panel>
         <Tabs.Panel fade tab="layers" {...tabs}>
-          <Block fade>
+          <Block>
             <MapForms.LayersForm fade {...props} />
           </Block>
         </Tabs.Panel>
@@ -46,7 +47,23 @@ const FormTabContainer = props => (
   </Tabs.Container>
 );
 
-export default class MapEditForm extends React.Component {
+interface MapEditFormProps extends TMapDisplay {
+  published: Boolean
+  account: {
+    accessToken: string,
+  }
+} 
+
+interface MapEditFormValues extends TMapDisplay {
+  hasError: Boolean
+}
+
+interface MapEditFormState {
+  saved: Boolean
+  published: Boolean
+}
+
+export default class MapEditForm extends React.Component<MapEditFormProps, MapEditFormState> {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -54,7 +71,14 @@ export default class MapEditForm extends React.Component {
       published: props.published || false
     };
   }
-  static defaultProps = mapDisplay1;
+
+  static defaultProps = { 
+    account: {
+      accessToken: "pk.eyJ1IjoicmVyb290aW5nMjA0MCIsImEiOiJjamx4NHZreHIwcGhkM3FwZ2F5ZWxqYTM4In0.djRgaveFi1gWzxFOrLiDJQ",
+    }, 
+    ...mapDisplay1 
+  }
+
   render() {
     return (
       <MapApp>
@@ -85,14 +109,17 @@ export default class MapEditForm extends React.Component {
             style: "",
             ...this.props
           }}
+          onSubmit={(values)=>{
+            console.log(values)
+          }}
         >
-          {props => {
+          {(props: InjectedFormikProps<MapEditFormProps, MapEditFormValues>) => {
             const unsaved = !this.state.saved || props.dirty;
             const unpublished = !this.state.published || unsaved;
             return (
               <Flex row>
                 <Flex width="240vh" height="100vh" column>
-                  <Header />
+                  <Header router={this.context.router} />
                   <div
                     style={{
                       padding: 20,
@@ -101,7 +128,7 @@ export default class MapEditForm extends React.Component {
                     }}
                   >
                     <h2>Map Display Editor</h2>
-                    <Form class="map-edit">
+                    <Form className="map-edit">
                       <Group>
                         <Button
                           style={{
@@ -126,7 +153,7 @@ export default class MapEditForm extends React.Component {
                   </div>
                 </Flex>
                 <Flex width="760vh" column>
-                  <MapDisplay {...props.values} editor />
+                  <MapDisplay accessToken={props.account.accessToken} {...props.values} debugMode />
                 </Flex>
               </Flex>
             );

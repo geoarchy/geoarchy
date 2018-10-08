@@ -4,6 +4,7 @@ enum CONTROL_REGION {
   BOTTOM_RIGHT
   BOTTOM_LEFT
 }
+
 input ILayerFilterOption {
   value: String
   label: String

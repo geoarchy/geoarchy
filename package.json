@@ -9,7 +9,8 @@
     "packages": [
       "api",
       "packages/*",
-      "web"
+      "web",
+      "types"
     ],
     "nohoist": [
       "web"

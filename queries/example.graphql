@@ -1,4 +1,22 @@
 # Try to write your query here
+
+fragment mapFields on MapDisplay {
+  options {
+      container
+      style
+    }
+    components {
+      type
+      region
+    }
+    layerGroups {
+      hideOnLoad
+      label
+      id
+      layers
+    }
+}
+
 mutation LoginUser {
   createUser: createAccount(data: { email: "bob@bob.com", password: "bob" }) {
     account {
@@ -17,7 +35,6 @@ mutation LoginUser {
 mutation CreateMap {
   map: updateMapDisplay(
     data: {
-      id: "267b6e56-5999-4e9c-872e-95e12c23311b"
       title: "My Embedded Mape"
       options: {
         container: "nj23h4jk23h4"
@@ -70,40 +87,13 @@ mutation CreateMap {
       ]
     }
   ) {
-    id
-    options {
-      container
-      style
-    }
-    components {
-      type
-      region
-    }
-    layerGroups {
-      hideOnLoad
-      label
-      id
-      layers
-    }
+    ...mapFields
   }
 }
 
 query getMap {
   map(id: "9bb27349-7510-4c16-b8b6-8e2e181a025f", username: "bob_4@bob.com") {
     id
-    options {
-      container
-      style
-    }
-    components {
-      type
-      region
-    }
-    layerGroups {
-      hideOnLoad
-      label
-      id
-      layers
-    }
+    ...mapFields
   }
 }
