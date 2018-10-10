@@ -1,11 +1,11 @@
 import React from "react";
 import { Field } from "formik";
-import { Flex, Group, Button } from "reakit";
+import { Flex, Button, Label, Input } from "reakit";
 
 export default () => (
   <React.Fragment>
     <Flex column>
-      <label htmlFor="title">Title</label>
+      <Label htmlFor="title">Title</Label>
       <Field type="text" name="title" />
     </Flex>
     <fieldset>
@@ -13,27 +13,30 @@ export default () => (
         <h3>Style</h3>
       </legend>
       <Flex column>
-        <label htmlFor="style">Style</label>
+        <Label htmlFor="style">Style</Label>
         <Field type="text" name="options.style" />
       </Flex>
       <Flex column>
-        <label htmlFor="style">Zoom</label>
+        <Label htmlFor="style">Zoom</Label>
         <Field type="text" name="options.zoom" />
       </Flex>
       <Flex column>
-        <label htmlFor="style">Max Zoom</label>
-        <Field type="text" name="options.maxZoom" />
+        <Label htmlFor="style">Max Zoom</Label>
+        <Field component={Input} type="text" name="options.maxZoom" />
       </Flex>
       <Flex column>
-        <label htmlFor="style">Min Zoom</label>
+        <Label htmlFor="style">Min Zoom</Label>
         <Field type="text" name="options.minZoom" />
       </Flex>
       <Flex column>
-        <label htmlFor="center">Center</label>
-        <Group>
-          <Field type="text" name="options.center[0]" />
-          <Field type="text" name="options.center[1]" />
-        </Group>
+          <h4>Default Center</h4>
+          <Flex row >
+            <Label htmlFor="options.center[0]">X:</Label>
+            <Field type="text" name="options.center[0]" />
+            <Label htmlFor="options.center[0]">Y:</Label>
+            <Field type="text" name="options.center[1]" />
+          </Flex>
+          
       </Flex>
       <Button>Update Style</Button>
     </fieldset>

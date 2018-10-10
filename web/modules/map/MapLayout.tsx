@@ -3,7 +3,7 @@ import * as React from "react";
 import Head from "next/head";
 
 interface LayoutProps {
-  title: string;
+  title: String;
   children: React.ReactNode;
 }
 

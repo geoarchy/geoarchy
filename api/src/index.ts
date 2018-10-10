@@ -3,9 +3,18 @@ import { resolvers } from "./resolvers";
 import { DataService } from "@geoarchy/data-service";
 
 // import permissions from './resolvers/permissions'
-import { checkJwt, getUser } from "./middleware";
+import { checkJwt } from "./middleware";
 
 let db = new DataService({});
+
+const settings = {
+  port: 8080,
+  cors: {
+    origin: "*",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204
+  },
+}
 
 const server = new GraphQLServer({
   typeDefs: "./src/schema.graphql",
@@ -32,13 +41,11 @@ server.express.post(
   }
 );
 
-server.express.post(server.options.endpoint, async (req, res, next) =>
-  getUser(req, res, next, db)
-);
+// server.express.post(server.options.endpoint, async (req, res, next) =>
+//   getUser(req, res, next, db)
+// );
 
-const settings = {
-  port: 8080
-}
+
 server.start(settings, ({ port }) =>
   console.log(`Server is running on http://localhost:${port}`)
 );

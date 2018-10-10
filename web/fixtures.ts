@@ -9,12 +9,17 @@ export const mapDisplay1 = {
     {
       type: "MapCompass",
       ariaLabel: "Reset North",
-      region: "TOP_LEFT"
+      region: "top-left"
     },
     {
       type: "MapZoom",
       ariaLabel: "Reset North",
-      region: "TOP_RIGHT"
+      region: "top-right"
+    },
+    {
+      type: "StaticLegend",
+      ariaLabel: "Legend",
+      region: "bottom-left"
     }
   ],
   layerGroups: [

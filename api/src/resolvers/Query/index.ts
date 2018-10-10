@@ -15,5 +15,11 @@ export const map = async (parent, args, ctx, info) => {
       args.id
     )}`
   );
-  return result.json();
+  if (result.status >= 200 && result.status <= 300) {
+    return result.json();
+  }
+  else {
+    throw Error("Could not find map")
+  }
+  
 };

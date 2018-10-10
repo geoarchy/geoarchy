@@ -12,6 +12,6 @@ export interface Context {
   token: any;
   request: any;
   connection: any;
-  userId: string;
-  mapBoxToken: string;
+  userId: String;
+  mapBoxToken: String;
 }

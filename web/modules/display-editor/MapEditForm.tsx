@@ -1,7 +1,9 @@
 import * as React from "react";
-import { Formik, Form, Field, FormikProps, InjectedFormikProps } from "formik";
+import { Formik, Form, InjectedFormikProps } from "formik";
 import { Button, Flex, Block, Group, Tabs } from "reakit";
-import { TMapDisplay } from '@geoarchy/types';
+import { TMapDisplay } from "@geoarchy/types";
+
+import { ACCESS_TOKEN } from "../../lib/config";
 
 import MapApp from "../map/MapApp";
 import MapDisplay from "../map/MapDisplay";
@@ -9,11 +11,13 @@ import { mapDisplay1 } from "../../fixtures";
 import * as MapForms from "./forms";
 import Header from "../../components/Header";
 
+// const VerticalTab =
+
 const FormTabContainer = props => (
   <Tabs.Container>
     {tabs => (
       <Block>
-        <Tabs>
+        <Tabs vertical>
           <Tabs.Tab tab="options" {...tabs}>
             Options
           </Tabs.Tab>
@@ -25,6 +29,9 @@ const FormTabContainer = props => (
           </Tabs.Tab>
           <Tabs.Tab tab="layers" {...tabs}>
             Styles
+          </Tabs.Tab>
+          <Tabs.Tab tab="data" {...tabs}>
+            Data
           </Tabs.Tab>
         </Tabs>
         <Tabs.Panel fade slideIn tab="options" {...tabs}>
@@ -42,42 +49,53 @@ const FormTabContainer = props => (
             <MapForms.LayersForm fade {...props} />
           </Block>
         </Tabs.Panel>
+        <Tabs.Panel fade tab="data" {...tabs}>
+          <Block>
+            <pre>{JSON.stringify(props, undefined, 4)}</pre>
+          </Block>
+        </Tabs.Panel>
       </Block>
     )}
   </Tabs.Container>
 );
 
 interface MapEditFormProps extends TMapDisplay {
-  published: Boolean
+  displayId: String;
+  published: Boolean;
   account: {
-    accessToken: string,
-  }
-} 
+    accessToken: String;
+  };
+}
 
 interface MapEditFormValues extends TMapDisplay {
-  hasError: Boolean
+  hasError: Boolean;
 }
 
 interface MapEditFormState {
-  saved: Boolean
-  published: Boolean
+  saved: Boolean;
+  published: Boolean;
+  activeTab: String;
 }
 
-export default class MapEditForm extends React.Component<MapEditFormProps, MapEditFormState> {
+export default class MapEditForm extends React.Component<
+  MapEditFormProps,
+  MapEditFormState
+> {
   constructor(props, context) {
     super(props, context);
     this.state = {
       saved: true,
-      published: props.published || false
+      published: props.published || false,
+      activeTab: "layers"
     };
   }
 
-  static defaultProps = { 
+  static defaultProps = {
+    ...mapDisplay1,
     account: {
-      accessToken: "pk.eyJ1IjoicmVyb290aW5nMjA0MCIsImEiOiJjamx4NHZreHIwcGhkM3FwZ2F5ZWxqYTM4In0.djRgaveFi1gWzxFOrLiDJQ",
-    }, 
-    ...mapDisplay1 
-  }
+      accessToken: ACCESS_TOKEN
+    }
+  };
 
   render() {
     return (
@@ -109,17 +127,19 @@ export default class MapEditForm extends React.Component<MapEditFormProps, MapEd
             style: "",
             ...this.props
           }}
-          onSubmit={(values)=>{
-            console.log(values)
+          onSubmit={values => {
+            console.log(values);
           }}
         >
-          {(props: InjectedFormikProps<MapEditFormProps, MapEditFormValues>) => {
+          {(
+            props: InjectedFormikProps<MapEditFormProps, MapEditFormValues>
+          ) => {
             const unsaved = !this.state.saved || props.dirty;
             const unpublished = !this.state.published || unsaved;
             return (
               <Flex row>
                 <Flex width="240vh" height="100vh" column>
-                  <Header router={this.context.router} />
+                  <Header />
                   <div
                     style={{
                       padding: 20,
@@ -153,7 +173,15 @@ export default class MapEditForm extends React.Component<MapEditFormProps, MapEd
                   </div>
                 </Flex>
                 <Flex width="760vh" column>
-                  <MapDisplay accessToken={props.account.accessToken} {...props.values} debugMode />
+                  <MapDisplay
+                    displayId={this.props.displayId}
+                    debugMode
+                    accessToken={
+                      (props.account && props.account.accessToken) ||
+                      ACCESS_TOKEN
+                    }
+                    {...props.values}
+                  />
                 </Flex>
               </Flex>
             );

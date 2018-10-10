@@ -1,6 +1,19 @@
 import * as React from "react";
+import * as Mapbox from 'mapbox-gl';
 
-const MapCompass = ({ ariaLabel, center, map }) => (
+export interface MapCompassOptions {
+  ariaLabel: String
+  region: String
+}
+
+export interface MapCompassProps {
+  ariaLabel: String
+  center: [number, number]
+  map: Mapbox.Map
+}
+
+
+const MapCompass: React.SFC<MapCompassProps> = ({ ariaLabel, center, map }) => (
   <div
     className="mapboxgl-ctrl mapboxgl-ctrl-group"
     onClick={() =>
@@ -12,7 +25,7 @@ const MapCompass = ({ ariaLabel, center, map }) => (
     <button
       className="mapboxgl-ctrl-icon mapboxgl-ctrl-compass"
       type="button"
-      ariaLabel={ariaLabel || "Reset North"}
+      aria-label={`${ariaLabel}`}
     >
       <span
         className="mapboxgl-ctrl-compass-arrow"
@@ -22,7 +35,7 @@ const MapCompass = ({ ariaLabel, center, map }) => (
   </div>
 );
 
-MapCompass.config = {
+export const config = {
   label: "Default Compass",
   description: "Shows an element that is pointing north"
 };

@@ -38,6 +38,7 @@ export type TMapDisplayComponent = {
   id: String
   position: String
   region: String
+  type: String
 }
 
 

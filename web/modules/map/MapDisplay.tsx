@@ -1,23 +1,49 @@
 import * as React from "react";
 import * as mapboxgl from "mapbox-gl";
+import gql from 'graphql-tag'
 import { TMapDisplay } from "@geoarchy/types";
+import { Query } from "react-apollo"
 import { mapDisplay1 } from "../../fixtures";
 
+import { ACCESS_TOKEN } from "../../lib/config";
+
 interface Process {
-  browser: boolean
+  browser: boolean;
 }
 
-declare var process: Process
+declare var process: Process;
 
 interface MapDisplayProps extends TMapDisplay {
-  accessToken: string;
+  displayId: String;
+  accessToken?: String;
 }
 
 interface MapDisplayState {
   style: any;
   layers: any;
-  componentsCanRender: boolean,
+  componentsCanRender: boolean;
 }
+const GET_DISPLAY = gql`
+  query getMap($id: String, $username: String ){
+      map(id: $id, username: $username) {
+        id
+        options {
+          container
+          style
+        }
+        components {
+          type
+          region
+        }
+        layerGroups {
+          hideOnLoad
+          label
+          id
+          layers
+        }
+      }
+  }
+`
 
 class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
   mapbox: any;
@@ -25,7 +51,7 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
   style: any;
   layers: any;
   props: MapDisplayProps;
-  state: { style: any; layers: any; componentsCanRender: boolean; };
+  state: { style: any; layers: any; componentsCanRender: boolean };
 
   static defaultProps = mapDisplay1;
   constructor(props: MapDisplayProps) {
@@ -55,9 +81,7 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
   initializeMap() {
     // only shows up in the browser bundle
     this.mapbox = require("mapbox-gl");
-    this.mapbox.accessToken =
-      this.props.accessToken ||
-      "pk.eyJ1IjoicmVyb290aW5nMjA0MCIsImEiOiJjamx4NHZreHIwcGhkM3FwZ2F5ZWxqYTM4In0.djRgaveFi1gWzxFOrLiDJQ";
+    this.mapbox.accessToken = this.props.accessToken || ACCESS_TOKEN;
     this.map = new this.mapbox.Map(this.props.options);
 
     // firing before the map loads, data will
@@ -90,19 +114,20 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
     }
   }
 
-  renderMapboxControlPortals() {
+  renderMapboxControlPortals(props) {
     const componentMap = {
       MapCompass: require("./components/MapCompass").default,
-      MapZoom: require("./components/MapZoom").default
+      MapZoom: require("./components/MapZoom").default,
+      StaticLegend: require("./components/StaticLegend").default
     };
     return ["bottom-left", "bottom-right", "top-right", "top-left"].map(
       region => {
-        const regionCs = this.props.components.filter(c => c.region === region);
+        const regionCs = props.components.filter(c => c.region === region);
 
         return (
           <div className={`mapboxgl-ctrl-${region}`}>
             {regionCs.map((C, n) => {
-              const ResultComponent = componentMap[C.type];
+              const ResultComponent = componentMap[`${C.type}`];
               return (
                 <ResultComponent
                   map={this.map}
@@ -110,6 +135,7 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
                   key={`${C.type}-${n}`}
                   {...C}
                   {...this.state.style}
+                  layerGroups={props.layerGroups}
                 />
               );
             })}
@@ -126,16 +152,41 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
           position: "relative"
         }}
       >
-        <style jsx>{`
-          .map-display {
-            height: 100vh;
-          }
-        `}</style>
-        <div className="mapbox-control-container">
-          {this.renderMapboxControlPortals()}
-        </div>
-        <div className="map-display" id={this.props.options.container} />
-      </div>
+      <style jsx>{`
+        .map-display {
+          height: 100vh;
+        }
+      `}</style>
+        <Query 
+      query={GET_DISPLAY} 
+      variables={{ 
+        id: this.props.displayId,
+        username: 'bob_4@bob.com'
+      }}
+    >
+      {({ data, loading, error }) => {
+        if (loading) {
+          return <div className="mapbox-control-container">Loading map display...</div>
+        }
+        if (error) {
+          return (
+          <div className="mapbox-control-container">
+            <p>Error loading map...</p>
+            <pre>{error.toString()}</pre>
+          </div>
+          )
+        }
+        return (
+          <div className="mapbox-control-container">
+            {this.renderMapboxControlPortals({ ...this.props, ...data, error })}
+          </div>
+        )
+      }}
+        
+      </Query>  
+      <div className="map-display" id={`${this.props.options.container}`} />
+    </div>
+       
     );
   }
 }

@@ -1,6 +1,5 @@
 import React from "react";
 import { MdMenu, MdCreate } from "react-icons/md";
-import Link from "next/link";
 import { withRouter } from "next/router";
 import {
   Toolbar,
@@ -9,7 +8,6 @@ import {
   Flex,
   Tooltip,
   Button,
-  Shadow
 } from "reakit";
 
 const styles = {
@@ -39,7 +37,7 @@ const ToolbarButton = ({ icon, tooltip }) => (
   </React.Fragment>
 );
 
-const Header = ({ router: { pathname } }) => (
+const Header = () => (
   <Toolbar background="black" gutter="8px 16px">
     <Flex row>
       <Toolbar.Content align="start" gutter="8px 16px">
