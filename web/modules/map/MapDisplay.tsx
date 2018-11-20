@@ -1,11 +1,10 @@
 import * as React from "react";
 import * as mapboxgl from "mapbox-gl";
-import gql from 'graphql-tag'
-import { TMapDisplay } from "@geoarchy/types";
-import { Query } from "react-apollo"
-import { mapDisplay1 } from "../../fixtures";
+import { TMapDisplay } from "../../../types";
 
 import { ACCESS_TOKEN } from "../../lib/config";
+
+const MAP_ID = "map-container";
 
 interface Process {
   browser: boolean;
@@ -13,9 +12,13 @@ interface Process {
 
 declare var process: Process;
 
-interface MapDisplayProps extends TMapDisplay {
+interface MapDisplayProps {
   displayId: String;
   accessToken?: String;
+  debugMode: Boolean;
+  map: TMapDisplay;
+  loading: any;
+  error: any;
 }
 
 interface MapDisplayState {
@@ -23,27 +26,19 @@ interface MapDisplayState {
   layers: any;
   componentsCanRender: boolean;
 }
-const GET_DISPLAY = gql`
-  query getMap($id: String, $username: String ){
-      map(id: $id, username: $username) {
-        id
-        options {
-          container
-          style
-        }
-        components {
-          type
-          region
-        }
-        layerGroups {
-          hideOnLoad
-          label
-          id
-          layers
-        }
+
+const MapContainer = props => (
+  <React.Fragment>
+    <style>{`
+      .map-display {
+        height: 100vh;
       }
-  }
-`
+    `}</style>
+    <div className="map-display" id={MAP_ID}>
+      {props.children}
+    </div>
+  </React.Fragment>
+);
 
 class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
   mapbox: any;
@@ -53,7 +48,6 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
   props: MapDisplayProps;
   state: { style: any; layers: any; componentsCanRender: boolean };
 
-  static defaultProps = mapDisplay1;
   constructor(props: MapDisplayProps) {
     super(props);
     this.state = {
@@ -81,13 +75,21 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
   initializeMap() {
     // only shows up in the browser bundle
     this.mapbox = require("mapbox-gl");
-    this.mapbox.accessToken = this.props.accessToken || ACCESS_TOKEN;
-    this.map = new this.mapbox.Map(this.props.options);
+    this.mapbox.accessToken = ACCESS_TOKEN;
+    this.map = new this.mapbox.Map({
+      // ...this.state.style.options,
+      // ...this.props.options,
+      ...this.props.map.options,
+      zoom: 9,
+      style: "mapbox://styles/rerooting2040/cjns1qcfn01be2sndvs5pr7k7",
+      center: [-85.41546435360851, 10.881280311177292],
+      container: MAP_ID
+    });
 
     // firing before the map loads, data will
     this.map.on("data", () => {
       if (!this.map.initialLoaded && !this.map.loaded()) {
-        const hiddenLayers = this.props.layerGroups.filter(
+        const hiddenLayers = this.props.map.layerGroups.filter(
           group => group.hideOnLoad
         );
         this.forLayerInGroups(hiddenLayers, layerId => {
@@ -106,10 +108,14 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
       this.setState({ componentsCanRender: true });
     });
   }
-
   componentDidMount() {
     // DOM has map id
-    if (process.browser) {
+    if (
+      window &&
+      process.browser &&
+      !this.props.loading &&
+      this.props.map.layerGroups
+    ) {
       this.initializeMap();
     }
   }
@@ -120,9 +126,12 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
       MapZoom: require("./components/MapZoom").default,
       StaticLegend: require("./components/StaticLegend").default
     };
-    return ["bottom-left", "bottom-right", "top-right", "top-left"].map(
-      region => {
-        const regionCs = props.components.filter(c => c.region === region);
+    return (
+      !props.loading &&
+      props.map &&
+      props.map.components &&
+      ["bottom-left", "bottom-right", "top-right", "top-left"].map(region => {
+        const regionCs = props.map.components.filter(c => c.region === region);
 
         return (
           <div className={`mapboxgl-ctrl-${region}`}>
@@ -134,59 +143,42 @@ class MapDisplay extends React.Component<MapDisplayProps, MapDisplayState> {
                   mapbox={this.mapbox}
                   key={`${C.type}-${n}`}
                   {...C}
-                  {...this.state.style}
-                  layerGroups={props.layerGroups}
+                  layerGroups={props.map.layerGroups}
                 />
               );
             })}
           </div>
         );
-      }
+      })
     );
   }
 
   render() {
+    const { loading, error } = this.props;
+    if (loading) {
+      return (
+        <MapContainer className="mapbox-control-container">
+          Loading map display...
+        </MapContainer>
+      );
+    }
+    if (error) {
+      return (
+        <MapContainer className="mapbox-control-container">
+          <p>Error loading map...</p>
+          <pre>{error.toString()}</pre>
+        </MapContainer>
+      );
+    }
     return (
       <div
         style={{
           position: "relative"
         }}
       >
-      <style jsx>{`
-        .map-display {
-          height: 100vh;
-        }
-      `}</style>
-        <Query 
-      query={GET_DISPLAY} 
-      variables={{ 
-        id: this.props.displayId,
-        username: 'bob_4@bob.com'
-      }}
-    >
-      {({ data, loading, error }) => {
-        if (loading) {
-          return <div className="mapbox-control-container">Loading map display...</div>
-        }
-        if (error) {
-          return (
-          <div className="mapbox-control-container">
-            <p>Error loading map...</p>
-            <pre>{error.toString()}</pre>
-          </div>
-          )
-        }
-        return (
-          <div className="mapbox-control-container">
-            {this.renderMapboxControlPortals({ ...this.props, ...data, error })}
-          </div>
-        )
-      }}
-        
-      </Query>  
-      <div className="map-display" id={`${this.props.options.container}`} />
-    </div>
-       
+        <MapContainer />
+        {this.renderMapboxControlPortals(this.props)}
+      </div>
     );
   }
 }

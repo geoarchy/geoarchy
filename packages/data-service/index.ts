@@ -1,114 +1,124 @@
-import * as DatabaseClient from "s3-db";
-import { fsString } from "@geoarchy/utils";
+import * as MongoDB from "mongodb";
+import bcrypt from "bcrypt";
+import { TMapDisplay } from "../../types";
 
-const short = require("short-uuid");
+import { emailString } from "@geoarchy/utils";
 
-const translator = short();
+const { MONGO_INSTANCE_URL, M_ACCOUNT_USER, M_ACCOUNT_PASS } = process.env;
 
-const defaultCollection = {
-  id: {
-    //Passing in the document is new with 2.0
-    generator: document => {
-      return translator.new();
-    },
-    propertyName: "id"
-  },
-  onlyUpdateOnMD5Change: true,
-  collideOnMissmatch: false,
-  errorOnNotFound: false,
-  encryption: true,
-  pageSize: 100
+export const hashPass = async password => await bcrypt.hash(password, 10);
+
+const globalConfig = {
+  auth: { user: M_ACCOUNT_USER, password: M_ACCOUNT_PASS }
 };
 
-const accountCollection = {
-  id: {
-    generator: document => {
-      return fsString(document.email);
-    },
-    propertyName: "id"
+const DATABASES: Object = {
+  accountDb: {
+    config: { ...globalConfig },
+    collections: ["account", "user"]
   },
-  pageSize: 100
-};
-
-export interface Database {
-  _db: DatabaseClient;
-  accounts: DatabaseClient.Collection;
-  maps: DatabaseClient.Collection;
-  getAccountMapCollection: Function;
-  accountMaps: DatabaseClient.Collection;
-}
-
-class DataService {
-  _db: DatabaseClient;
-  _config: any;
-  _collectionNames: string[];
-  maps: DatabaseClient.Collection;
-  constructor(config) {
-    this._config = config;
-    this._collectionNames = [];
-    // connect it to the instance of user DB it needs
-    this._db = new DatabaseClient(this.getDbConfig(this._config));
+  mapDb: {
+    config: { ...globalConfig },
+    collections: ["display"]
   }
+};
 
-  async init() {
-    let self = this;
-    this._collectionNames = await this._db.getCollectionNames();
-    const getCollectionNames = this._collectionNames.map(async collection => {
-      self[collection] = await this.collection(collection);
+export class DataService {
+  accountDb: {
+    account: MongoDB.Collection;
+  };
+  mapDb: {
+    display: MongoDB.Collection;
+  };
+  toObjectId(string) {
+    return new MongoDB.ObjectId(string);
+  }
+  urlString(dbName: String): String {
+    return `${MONGO_INSTANCE_URL}/${dbName}`;
+  }
+  hasDuplicates(array) {
+    return new Set(array).size !== array.length;
+  }
+  hasDuplicateIds(array: Array<{ _id: String }>) {
+    return (
+      array &&
+      array.length > 0 &&
+      this.hasDuplicates(array.map(({ _id }) => _id))
+    );
+  }
+  /**
+   *  updateDoc
+   *    Update mongo documents in a mongoose-esque fashion
+   * @param collectionPath a path to the Mongo collection
+   * @param data
+   */
+  async updateDoc(db = "mapDb", collectionPath = "display", data: any) {
+    const { _id: stringId, ...dataToUpdate } = data;
+    const _id = this.toObjectId(stringId);
+    await this[db][collectionPath].updateOne({ _id }, { $set: dataToUpdate });
+
+    return this[db][collectionPath].findOne({
+      _id
     });
-
-    await Promise.all(getCollectionNames);
   }
-
-  async getAccountMapCollection(accountId, path = "account") {
-    console.log({ accountId });
-    this[`${path}Maps`] = this.maps.subCollection(accountId);
+  async getAccount(data): Promise<MongoDB.AggregationCursorResult> {
+    return this.accountDb.account.findOne({ email: emailString(data.email) });
   }
-
-  getDbConfig(config) {
-    return {
-      db: {
-        name: "geoarchy",
-        namePattern: "${db.name}.${db.environment}-${name}" // name is passed in, db.* comes from the configuration.
-      },
-      collections: {
-        default: defaultCollection,
-        accounts: accountCollection,
-        components: {
-          pageSize: 100
-        },
-        themes: {
-          pageSize: 100
-        },
-        maps: {
-          pageSize: 100,
-          encryption: false
-        }
-      }
-    };
+  async createAccount(data): Promise<any> {
+    const opResult = await this.accountDb.account.save({
+      ...data,
+      password: await hashPass(data.password)
+    });
+    return opResult.result;
   }
-
-  async collection(name) {
-    return this._db.getCollection(name);
+  async getMapDisplay(data: { id: String }): Promise<TMapDisplay> {
+    return this.mapDb.display.findOne({ _id: this.toObjectId(data.id) });
   }
+  async createMapDisplay(data: TMapDisplay): Promise<TMapDisplay> {
+    const { insertedId } = await this.mapDb.display.insertOne(data);
 
-  async findAndGetData(collectionName, ...findArgs) {
-    let collection = await this.collection(collectionName);
-    let results = await collection.find(...(findArgs || null));
-    return Promise.all(results.map(result => result.getDocument()));
+    return this.mapDb.display.findOne({ _id: insertedId });
   }
-
-  async createUnique(id, data, collectionName) {
-    let collection = await this.collection(collectionName);
-    const exists = await collection.exists(id);
-    if (exists) {
-      return {
-        error: `${collectionName} ID is not unique`
-      };
+  async updateMapDisplay(data): Promise<TMapDisplay> {
+    if (this.hasDuplicateIds(data.layerGroups)) {
+      throw Error("layer group id already exists");
     }
-    // thus, we should be able to ensure create document
-    return collection.saveDocument(data);
+
+    if (this.hasDuplicateIds(data.components)) {
+      throw Error("component id already exists");
+    }
+    return this.updateDoc("mapDb", "display", data);
+  }
+  /**
+   * Needs to be resolved to instantiate the DB client
+   * Instantiates all database clients, and collections
+   * at dbClient.myDbName.collection
+   *
+   * @returns Promise<DataService>
+   */
+  async init() {
+    try {
+      // let self = this;
+      await Promise.all(
+        Object.entries(DATABASES).map(async ([dbName, dbConfig]) => {
+          let dbClient = new MongoDB.MongoClient(
+            MONGO_INSTANCE_URL,
+            dbConfig.config
+          );
+          await dbClient.connect();
+          this[dbName] = dbClient.db(dbName);
+          dbConfig.collections.map(async collectionName => {
+            this[dbName][collectionName] = this[dbName].collection(
+              collectionName
+            );
+          });
+        })
+      );
+      return this;
+    } catch (err) {
+      console.log("Mongo Initialization Error");
+      console.error(err);
+      throw err;
+    }
   }
 }
-
-export { DataService };

@@ -1,14 +1,12 @@
-import * as React from "react";
-import gql from 'graphql-tag';
-import { Query } from "react-apollo";
+import * as React from 'react'
 
-import MapApp from "../modules/map/MapApp";
-import MapDisplay from "../modules/map/MapDisplay";
+import MapApp from '../modules/map/MapApp'
+import MapDisplayPage from '../modules/map/MapDisplayPage'
 
 export default props => {
   return (
     <MapApp>
-      <MapDisplay displayId={props.router.query.id} />
+      <MapDisplayPage displayId={props.router.query.id} />
     </MapApp>
-  );
-};
+  )
+}

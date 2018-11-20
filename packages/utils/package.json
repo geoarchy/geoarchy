@@ -3,5 +3,8 @@
   "version": "0.0.1",
   "description": "utils",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf lib"
+  }
 }

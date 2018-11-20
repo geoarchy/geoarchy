@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 
-import { TLayerGroup } from "@geoarchy/types";
+import { TLayerGroup } from "../../../../types";
 
 interface MapCompassProps {
   layerGroups: TLayerGroup[];
@@ -22,7 +22,7 @@ const LegendListItem = styled.li`
 `;
 
 interface IconProps {
-  backgroundColor: String;
+  backgroundColor?: any;
 }
 
 const LegendListIcon = styled.span`
@@ -34,6 +34,7 @@ const LegendListIcon = styled.span`
 `;
 
 const StaticLegend: React.SFC<MapCompassProps> = props => {
+  console.log(props);
   return (
     <div className="mapboxgl-ctrl mapboxgl-ctrl-group static-legend">
       <LegendList>

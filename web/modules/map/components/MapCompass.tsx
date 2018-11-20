@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as Mapbox from 'mapbox-gl';
+import * as React from 'react'
+import * as Mapbox from 'mapbox-gl'
 
 export interface MapCompassOptions {
   ariaLabel: String
@@ -12,13 +12,12 @@ export interface MapCompassProps {
   map: Mapbox.Map
 }
 
-
 const MapCompass: React.SFC<MapCompassProps> = ({ ariaLabel, center, map }) => (
   <div
     className="mapboxgl-ctrl mapboxgl-ctrl-group"
     onClick={() =>
       map.flyTo({
-        center
+        center,
       })
     }
   >
@@ -29,15 +28,15 @@ const MapCompass: React.SFC<MapCompassProps> = ({ ariaLabel, center, map }) => (
     >
       <span
         className="mapboxgl-ctrl-compass-arrow"
-        style={{ transform: "rotate(0deg)" }}
+        style={{ transform: 'rotate(0deg)' }}
       />
     </button>
   </div>
-);
+)
 
 export const config = {
-  label: "Default Compass",
-  description: "Shows an element that is pointing north"
-};
+  label: 'Default Compass',
+  description: 'Shows an element that is pointing north',
+}
 
-export default MapCompass;
+export default MapCompass

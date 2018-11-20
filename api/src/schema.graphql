@@ -1,3 +1,16 @@
+scalar Anything
+scalar Date
+
+input IGeoPoint {
+  lat: Float
+  lng: Float
+}
+
+type TGeoPoint {
+  lat: Float!
+  lng: Float!
+}
+
 enum CONTROL_REGION {
   TOP_RIGHT
   TOP_LEFT
@@ -40,6 +53,7 @@ type TPopupSettings {
 }
 
 input ILayerFilter {
+  _id: String!
   options: [ILayerFilterOption]
   on: String # field the filter happens on
   operator: String # defaults to '='
@@ -47,6 +61,7 @@ input ILayerFilter {
 }
 
 type TLayerFilter {
+  _id: String!
   options: [TLayerFilterOption]
   on: String # field the filter happens on
   operator: String # defaults to '='
@@ -56,7 +71,7 @@ type TLayerFilter {
 input ILayerGroup {
   hideOnLoad: Boolean
   label: String!
-  id: String!
+  _id: String!
   layers: [String]!
   filters: [ILayerFilter]
   popup: IPopupSettings
@@ -65,19 +80,21 @@ input ILayerGroup {
 type TLayerGroup {
   hideOnLoad: Boolean
   label: String!
-  id: String!
+  _id: String!
   layers: [String]
   filters: [TLayerFilter]
   popup: TPopupSettings
 }
 
 input IMapComponent {
+  _id: String!
   type: String!
   ariaLabel: String!
   region: String!
 }
 
 type TMapComponent {
+  _id: String!
   type: String!
   ariaLabel: String!
   region: String!
@@ -86,15 +103,24 @@ type TMapComponent {
 input IMapOptions {
   container: String!
   style: String!
+  initialZoom: Float
+  center: IGeoPoint
+  maxZoom: Float
+  minZoom: Float
+  center: IGeoPoint
 }
 
 type TMapOptions {
   container: String!
   style: String!
+  initialZoom: Float
+  maxZoom: Float
+  minZoom: Float
+  center: TGeoPoint
 }
 
 type TMapPayload {
-  id: ID!
+  _id: ID!
   title: String!
   options: TMapOptions
   layerGroups: [TLayerGroup!]
@@ -103,7 +129,7 @@ type TMapPayload {
 
 type AccountPayload {
   email: String
-  id: String
+  _id: String
   orgName: String
   firstName: String
   lastName: String
@@ -131,12 +157,32 @@ type TMapDisplay {
 }
 
 input IMapDisplay {
-  id: String!
+  _id: String!
   title: String
   published: Boolean
   options: IMapOptions
   layerGroups: [ILayerGroup]
   components: [IMapComponent]
+}
+
+enum ItemTypes {
+  components
+  layerGroups
+}
+
+enum ItemOps {
+  push
+  pop
+  pull
+  pullAll
+}
+
+input IMapDisplayUpdateItem {
+  mapId: String
+  itemType: ItemTypes
+  itemOp: String
+  itemType: ItemTypes
+  item: Anything
 }
 
 input INewMapDisplay {
@@ -158,7 +204,7 @@ type UserPayload {
 
 type Query {
   account(email: String): AccountPayload
-  map(id: String, username: String): TMapPayload
+  map(id: String): TMapPayload
 }
 
 type Mutation {
@@ -166,4 +212,5 @@ type Mutation {
   createAccount(data: CreateAccountData): UserPayload
   createMapDisplay(data: INewMapDisplay): TMapPayload
   updateMapDisplay(data: IMapDisplay): TMapPayload
+  updateMapItem(data: IMapDisplayUpdateItem): TMapPayload
 }

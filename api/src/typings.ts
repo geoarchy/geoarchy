@@ -1,17 +1,10 @@
-import { Collection } from "s3-db";
-
-export interface Database {
-  accounts: Collection;
-  maps: Collection;
-  getAccountMapCollection: Function;
-  accountMaps: Collection;
-}
+import * as Data from '@geoarchy/data-service'
 
 export interface Context {
-  db: Database;
-  token: any;
-  request: any;
-  connection: any;
-  userId: String;
-  mapBoxToken: String;
+  db: Data.DataService
+  token: any
+  request: any
+  connection: any
+  userId: String
+  mapBoxToken: String
 }

@@ -1,50 +1,29 @@
-import React from "react";
-import { MdMenu, MdCreate } from "react-icons/md";
-import { withRouter } from "next/router";
-import {
-  Toolbar,
-  Heading,
-  Avatar,
-  Flex,
-  Tooltip,
-  Button,
-} from "reakit";
+import React from 'react'
+import { MdMenu, MdCreate } from 'react-icons/md'
+import { withRouter } from 'next/router'
+import { Toolbar, Heading, Avatar, Flex, Tooltip } from 'reakit'
+
+import ToolbarButton from './ToolBarButton'
 
 const styles = {
   heading: {
-    fontSize: "2em",
-    margin: "0",
-    fontVariant: "all-small-caps historical-ligatures slashed-zero",
+    fontSize: '2em',
+    margin: '0',
+    fontVariant: 'all-small-caps historical-ligatures slashed-zero',
     fontWeight: 200,
-    letterSpacing: ".2rem",
-    color: "white"
+    letterSpacing: '.2rem',
+    color: 'white',
   },
-  toolbarButton: {
-    backgroundColor: "transparent",
-    border: "0 none",
-    borderRadius: 0,
-    outline: "none",
-    color: "white"
-  }
-};
-
-const ToolbarButton = ({ icon, tooltip }) => (
-  <React.Fragment>
-    <Button {...styles.toolbarButton}>
-      <Toolbar.Focusable as={icon} fontSize={24} />
-    </Button>
-    <Tooltip>{tooltip}</Tooltip>
-  </React.Fragment>
-);
+}
 
 const Header = () => (
   <Toolbar background="black" gutter="8px 16px">
     <Flex row>
       <Toolbar.Content align="start" gutter="8px 16px">
-        <ToolbarButton icon={MdMenu} tooltip="Menu" />
+        <ToolbarButton icon={MdMenu} tooltip="Menu" fontSize={24} />
       </Toolbar.Content>
       <Toolbar.Content gutter="8px 16px">
-        <ToolbarButton icon={MdCreate} tooltip="Editor" />
+        <ToolbarButton icon={MdCreate} tooltip="Editor" fontSize={24} />
       </Toolbar.Content>
     </Flex>
     <Toolbar.Content align="center">
@@ -55,6 +34,6 @@ const Header = () => (
       <Tooltip>Account Settings</Tooltip>
     </Toolbar.Content>
   </Toolbar>
-);
+)
 
-export default withRouter(Header);
+export default withRouter(Header)

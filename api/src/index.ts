@@ -1,3 +1,9 @@
+import * as path from "path";
+
+require("dotenv").config({
+  path: path.join(__dirname, "../../.env")
+});
+
 import { GraphQLServer } from "graphql-yoga";
 import { resolvers } from "./resolvers";
 import { DataService } from "@geoarchy/data-service";
@@ -5,26 +11,25 @@ import { DataService } from "@geoarchy/data-service";
 // import permissions from './resolvers/permissions'
 import { checkJwt } from "./middleware";
 
-let db = new DataService({});
-
 const settings = {
   port: 8080,
   cors: {
     origin: "*",
-    "preflightContinue": false,
-    "optionsSuccessStatus": 204
-  },
-}
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+  }
+};
 
 const server = new GraphQLServer({
-  typeDefs: "./src/schema.graphql",
   resolvers,
+  typeDefs: "./src/schema.graphql",
   // middlewares: [permissions],
   context: async req => {
+    let db = new DataService();
     await db.init();
     return {
       ...req,
-      db
+      db: db
     };
   }
 });
@@ -44,7 +49,6 @@ server.express.post(
 // server.express.post(server.options.endpoint, async (req, res, next) =>
 //   getUser(req, res, next, db)
 // );
-
 
 server.start(settings, ({ port }) =>
   console.log(`Server is running on http://localhost:${port}`)

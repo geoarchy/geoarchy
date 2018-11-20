@@ -4,8 +4,12 @@
   "description": "map config service using aws s3",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "clean": "rimraf lib"
+  },
   "dependencies": {
     "aws-sdk": "^2.305.0",
+    "bcrypt": "^3.0.2",
     "s3-db": "^2.3.1",
     "short-uuid": "^3.0.0"
   }

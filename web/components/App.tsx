@@ -1,23 +1,24 @@
-import React from "react";
+import React from 'react'
 
 export default ({ children }) => (
   <main>
     {children}
-    <style jsx global>{`
+    <style>{`
       * {
-        font-family: Menlo, Monaco, "Lucida Console", "Liberation Mono",
-          "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New",
+        font-family: Menlo, Monaco, 'Lucida Console', 'Liberation Mono',
+          'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New',
           monospace, serif;
       }
       body {
         margin: 0;
         padding: 25px 50px;
+        font-size: 0.9rem;
       }
       a {
         color: #22bad9;
       }
       p {
-        font-size: 14px;
+        font-size: 1rem;
         line-height: 24px;
       }
       article {
@@ -42,4 +43,4 @@ export default ({ children }) => (
       }
     `}</style>
   </main>
-);
+)

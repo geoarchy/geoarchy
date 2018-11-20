@@ -1,12 +1,13 @@
-import React from "react";
-import { Field } from "formik";
-import { Flex, Button, Label, Input } from "reakit";
+import React from 'react'
+import { Field } from 'formik'
+import { InputField } from './Fields'
+import { Flex, Button, Label, Input } from 'reakit'
 
 export default () => (
   <React.Fragment>
     <Flex column>
       <Label htmlFor="title">Title</Label>
-      <Field type="text" name="title" />
+      <Field component={InputField} type="text" name="title" />
     </Flex>
     <fieldset>
       <legend>
@@ -14,29 +15,42 @@ export default () => (
       </legend>
       <Flex column>
         <Label htmlFor="style">Style</Label>
-        <Field type="text" name="options.style" />
+        <Field component={InputField} name="options.style" />
       </Flex>
       <Flex column>
         <Label htmlFor="style">Zoom</Label>
-        <Field type="text" name="options.zoom" />
+        <Field component={InputField} name="options.initialZoom" />
       </Flex>
       <Flex column>
         <Label htmlFor="style">Max Zoom</Label>
-        <Field component={Input} type="text" name="options.maxZoom" />
+        <Field component={InputField} name="options.maxZoom" />
       </Flex>
       <Flex column>
         <Label htmlFor="style">Min Zoom</Label>
-        <Field type="text" name="options.minZoom" />
+        <Field component={InputField} name="options.minZoom" />
       </Flex>
       <Flex column>
-          <h4>Default Center</h4>
-          <Flex row >
-            <Label htmlFor="options.center[0]">X:</Label>
-            <Field type="text" name="options.center[0]" />
-            <Label htmlFor="options.center[0]">Y:</Label>
-            <Field type="text" name="options.center[1]" />
+        <h4>Default Center</h4>
+        <Flex row>
+          <Flex column>
+            <Label htmlFor="options.center[0].lat">Latitude:</Label>
+            <Field
+              component={InputField}
+              type="text"
+              name="options.center.lat"
+              defaultValue={30.2}
+            />
           </Flex>
-          
+          <Flex column>
+            <Label htmlFor="options.center[0.lng]">Longitude:</Label>
+            <Field
+              component={InputField}
+              type="text"
+              name="options.center.lng"
+              defaultValue={-3.2}
+            />
+          </Flex>
+        </Flex>
       </Flex>
       <Button>Update Style</Button>
     </fieldset>
@@ -44,9 +58,7 @@ export default () => (
       <legend>
         <h3>Embed</h3>
       </legend>
-      <textarea width="100%" cols="42">
-        sdfdsfsd
-      </textarea>
+      <Field component={InputField} type="textarea" name="embed" />
     </fieldset>
   </React.Fragment>
-);
+)
