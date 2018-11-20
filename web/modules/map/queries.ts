@@ -24,6 +24,17 @@ const mapFragment = `
     hideOnLoad
     label
     layers
+    filters {
+      _id
+      operator
+      defaultWidget
+      on
+      options{
+        value
+        label
+      }
+      defaultWidget
+    }
   }
 `
 
@@ -48,21 +59,21 @@ export const UPDATE_DISPLAY_MUTATION = gql`
 `
 
 export const withMapQuery = graphql(GET_DISPLAY_QUERY, {
-  options: (props: { displayId: String }) => {
-    return {
-      variables: {
-        id: props.displayId,
-      },
-    }
-  },
+    options: (props: { displayId: String }) => {
+        return {
+            variables: {
+                id: props.displayId,
+            },
+        }
+    },
 })
 
 export const withMapUpdateMutation = graphql(UPDATE_DISPLAY_MUTATION, {
-  options: (props: { displayId: String }) => {
-    return {
-      variables: {
-        id: props.displayId,
-      },
-    }
-  },
+    options: (props: { displayId: String }) => {
+        return {
+            variables: {
+                id: props.displayId,
+            },
+        }
+    },
 })

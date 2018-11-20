@@ -15,6 +15,6 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "lib": ["dom", "es2016"],
-    "typeRoots": ["./types"]
+    "typeRoots": ["./types", "../node_modules/@types"]
   }
 }

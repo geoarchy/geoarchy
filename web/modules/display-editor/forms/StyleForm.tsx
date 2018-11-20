@@ -5,10 +5,6 @@ import { Flex, Button, Label } from 'reakit'
 
 export default () => (
     <React.Fragment>
-        <Flex column>
-            <Label htmlFor="title">Title</Label>
-            <Field component={InputField} type="text" name="title" />
-        </Flex>
         <fieldset>
             <legend>
                 <h3>Style</h3>

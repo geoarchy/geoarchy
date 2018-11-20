@@ -1,124 +1,110 @@
-import * as React from "react";
-import { Formik, Form, InjectedFormikProps } from "formik";
-import { Button, Flex, Group } from "reakit";
-
-import { ACCESS_TOKEN } from "../../lib/config";
-
-import MapApp from "../map/MapApp";
-import MapDisplay from "../map/MapDisplay";
-import Header from "../../components/Header";
-import FormTabContainer from "./components/FormTabContainer";
-import { withMapQuery, withMapUpdateMutation } from "../map/queries";
+import * as React from 'react'
+import { Formik, Form, InjectedFormikProps } from 'formik'
+import { Flex } from 'reakit'
+import { ACCESS_TOKEN } from '../../lib/config'
+import { TMapDisplay } from '@geoarchy/types'
+import MapApp from '../map/MapApp'
+import MapDisplay from '../map/MapDisplay'
+import Header from '../../components/Header'
+import FormTabContainer from './components/FormTabContainer'
+import { withMapQuery, withMapUpdateMutation } from '../map/queries'
 
 interface MapEditFormProps {
-  displayId: String;
-  published: Boolean;
-  account: {
-    accessToken: String;
-  };
-  updateMapDisplay(TMapDisplay): Promise<any>;
-  data: { map: TMapDisplay };
-  loading: Boolean;
-  error: any;
+    displayId: String
+    published: Boolean
+    account: {
+        accessToken: String
+    }
+    // updateMapDisplay(TMapDisplay): Promise<any>
+    // data: { map: TMapDisplay }
+    loading: Boolean
+    error: any
 }
 
 interface MapEditFormValues extends TMapDisplay {
-  hasError: Boolean;
+    hasError: Boolean
 }
 
 interface MapEditFormState {
-  saved: Boolean;
-  published: Boolean;
-  activeTab: String;
+    saved: Boolean
+    published: Boolean
+    activeTab: String
 }
 
 class MapEditForm extends React.Component<MapEditFormProps, MapEditFormState> {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      saved: true,
-      published: props.published || false,
-      activeTab: "layers"
-    };
-  }
-
-  static defaultProps = {
-    account: {
-      accessToken: ACCESS_TOKEN
+    constructor(props, context) {
+        super(props, context)
+        this.state = {
+            saved: true,
+            published: props.published || false,
+            activeTab: 'layers',
+        }
     }
-  };
 
-  render() {
-    return (
-      <Formik
-        initialValues={this.props.data.map}
-        onSubmit={async (values, actions) => {
-          await this.props.updateMapDisplay(values);
-          actions.setSubmitting(false);
-          console.log("updating map");
-        }}
-      >
-        {(props: InjectedFormikProps<MapEditFormProps, MapEditFormValues>) => {
-          const unsaved = !this.state.saved || props.dirty;
-          const unpublished = !this.state.published || unsaved;
-          return (
-            <Flex row>
-              <Flex minWidth="500px" height="100vh" column>
-                <Header />
-                <div
-                  style={{
-                    overflow: "scroll",
-                    paddingBottom: 40
-                  }}
-                >
-                  <Form className="map-edit">
-                    <Group>
-                      <Button
-                        style={{
-                          backgroundColor: unpublished ? "red" : "green"
-                        }}
-                        type="submit"
-                      >
-                        {unsaved ? "Unsaved" : "Saved"}
-                      </Button>
-                      <Button
-                        style={{
-                          backgroundColor: unpublished ? "yellow" : "green",
-                          color: unpublished ? "black" : "white"
-                        }}
-                      >
-                        {unpublished ? "Unpublished" : "Published"}
-                      </Button>
-                    </Group>
-                    <Flex column>
-                      <Flex row>
-                        <FormTabContainer {...props} />
-                      </Flex>
-                    </Flex>
-                  </Form>
-                </div>
-              </Flex>
-              <Flex column width="100%">
-                <MapDisplay
-                  displayId={props.displayId}
-                  loading={this.props.loading}
-                  error={this.props.error}
-                  debugMode={false}
-                  map={props.values}
-                />
-              </Flex>
-            </Flex>
-          );
-        }}
-      </Formik>
-    );
-  }
+    static defaultProps = {
+        account: {
+            accessToken: ACCESS_TOKEN,
+        },
+    }
+
+    render() {
+        return (
+            <Formik
+                initialValues={this.props.data.map}
+                onSubmit={async (values, actions) => {
+                    await this.props.updateMapDisplay(values)
+                    actions.setSubmitting(false)
+                    console.log('updating map')
+                }}
+            >
+                {(
+                    props: InjectedFormikProps<
+                        MapEditFormProps,
+                        MapEditFormValues
+                    >
+                ) => {
+                    const unsaved = !this.state.saved || props.dirty
+                    const unpublished = !this.state.published || unsaved
+                    return (
+                        <Flex row>
+                            <Flex minWidth="500px" height="100vh" column>
+                                <Header />
+                                <div
+                                    style={{
+                                        overflow: 'scroll',
+                                        paddingBottom: 40,
+                                    }}
+                                >
+                                    <Form className="map-edit">
+                                        <Flex column>
+                                            <Flex row>
+                                                <FormTabContainer {...props} />
+                                            </Flex>
+                                        </Flex>
+                                    </Form>
+                                </div>
+                            </Flex>
+                            <Flex column width="100%">
+                                <MapDisplay
+                                    displayId={props.displayId}
+                                    loading={this.props.loading}
+                                    error={this.props.error}
+                                    debugMode={false}
+                                    map={props.values}
+                                />
+                            </Flex>
+                        </Flex>
+                    )
+                }}
+            </Formik>
+        )
+    }
 }
 
 const MapEditPage = props => (
-  <MapApp>
-    <style>
-      {`
+    <MapApp>
+        <style>
+            {`
           .map-edit label {
             padding-bottom: 0.2rem;
           }
@@ -138,11 +124,11 @@ const MapEditPage = props => (
             border: none;
           }
         `}
-    </style>
-    <MapEditForm {...props} />
-  </MapApp>
-);
+        </style>
+        <MapEditForm {...props} />
+    </MapApp>
+)
 
-const MapEditFormWithQuery = withMapUpdateMutation(withMapQuery(MapEditPage));
+const MapEditFormWithQuery = withMapUpdateMutation(withMapQuery(MapEditPage))
 
-export default MapEditFormWithQuery;
+export default MapEditFormWithQuery
