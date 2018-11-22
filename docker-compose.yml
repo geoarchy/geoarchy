@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  api:
+    build: ./api
+    depends_on:
+      - db
+    environment:
+      - NODE_ENV=production
+      - APP_SECRET=23423423423
+      - MONGO_INSTANCE_URL=mongo://db/geoarchy
+      - M_ACCOUNT_USER=geoarchy
+      - M_ACCOUNT_PASS=geoarchy
+  web:
+    build: ./web
+    depends_on:
+      - api
+    environment:
+      - NODE_ENV=production
+
+  db:
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=geoarchy
+      - MONGO_INITDB_ROOT_USERNAME=geoarchy
+      - MONGO_INITDB_ROOT_PASSWORD=geoarchy

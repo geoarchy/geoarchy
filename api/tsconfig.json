@@ -5,8 +5,8 @@
     "module": "commonjs",
     "sourceMap": true,
     "noUnusedLocals": true,
-    "rootDir": "src",
     "outDir": "dist",
     "lib": ["esnext"]
-  }
+  },
+  "include": ["src"]
 }

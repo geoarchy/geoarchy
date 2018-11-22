@@ -4,13 +4,13 @@ import { GraphQLScalarType } from 'graphql'
 export const Anything = new GraphQLScalarType({
   name: 'Anything',
   description: 'Anything',
-  //invoked to parse client input that was passed through variables.
-  //takes a plain JS object.
+  // invoked to parse client input that was passed through variables.
+  // takes a plain JS object.
   parseValue: v => v,
-  //invoked to parse client input that was passed inline in the query.
-  //takes a value AST.
+  // invoked to parse client input that was passed inline in the query.
+  // takes a value AST.
   parseLiteral: literal => literal,
-  //invoked when serializing the result to send it back to a client.
+  // invoked when serializing the result to send it back to a client.
   serialize: v => v,
 })
 

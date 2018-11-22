@@ -8,18 +8,19 @@ export interface MapCompassOptions {
 
 export interface MapCompassProps {
   ariaLabel: String
-  center: [number, number]
+  center: [Float, Float]
   map: Mapbox.Map
 }
+
+const handleCompassClick = (map, center) =>
+  map.flyTo({
+    center,
+  })
 
 const MapCompass: React.SFC<MapCompassProps> = ({ ariaLabel, center, map }) => (
   <div
     className="mapboxgl-ctrl mapboxgl-ctrl-group"
-    onClick={() =>
-      map.flyTo({
-        center,
-      })
-    }
+    onClick={handleCompassClick.bind(this, map, center)}
   >
     <button
       className="mapboxgl-ctrl-icon mapboxgl-ctrl-compass"

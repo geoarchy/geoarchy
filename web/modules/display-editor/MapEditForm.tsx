@@ -47,16 +47,15 @@ class MapEditForm extends React.Component<MapEditFormProps, MapEditFormState> {
     },
   }
 
+  async updateMap(values, actions) {
+    await this.props.updateMapDisplay(values)
+    actions.setSubmitting(false)
+    console.log('updating map')
+  }
+
   render() {
     return (
-      <Formik
-        initialValues={this.props.data.map}
-        onSubmit={async (values, actions) => {
-          await this.props.updateMapDisplay(values)
-          actions.setSubmitting(false)
-          console.log('updating map')
-        }}
-      >
+      <Formik initialValues={this.props.data.map} onSubmit={this.updateMap}>
         {(props: InjectedFormikProps<MapEditFormProps, MapEditFormValues>) => {
           // const unsaved = !this.state.saved || props.dirty
           // const unpublished = !this.state.published || unsaved

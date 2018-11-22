@@ -1,9 +1,9 @@
-import React from 'react'
+import react from 'react'
 import { MdMenu, MdCreate } from 'react-icons/md'
 import { withRouter } from 'next/router'
 import { Toolbar, Heading, Avatar, Flex, Tooltip } from 'reakit'
 
-import ToolbarButton from './ToolBarButton'
+import ToolBarButton from './ToolBarButton'
 
 const styles = {
   heading: {
@@ -20,10 +20,10 @@ const Header = () => (
   <Toolbar background="black" gutter="8px 16px">
     <Flex row>
       <Toolbar.Content align="start" gutter="8px 16px">
-        <ToolbarButton icon={MdMenu} tooltip="Menu" fontSize={24} />
+        <ToolBarButton icon={MdMenu} tooltip="Menu" fontSize={24} />
       </Toolbar.Content>
       <Toolbar.Content gutter="8px 16px">
-        <ToolbarButton icon={MdCreate} tooltip="Editor" fontSize={24} />
+        <ToolBarButton icon={MdCreate} tooltip="Editor" fontSize={24} />
       </Toolbar.Content>
     </Flex>
     <Toolbar.Content align="center">

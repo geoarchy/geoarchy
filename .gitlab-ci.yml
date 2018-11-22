@@ -1,6 +1,6 @@
 image: node:11.0
 before_script:
-  - yarn install
+  - yarn
 lint:
   script:
     - yarn run lint

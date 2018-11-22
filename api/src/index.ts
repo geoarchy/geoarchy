@@ -25,11 +25,11 @@ const server = new GraphQLServer({
   typeDefs: "./src/schema.graphql",
   // middlewares: [permissions],
   context: async req => {
-    let db = new DataService();
+    const db = new DataService();
     await db.init();
     return {
       ...req,
-      db: db
+      db
     };
   }
 });
