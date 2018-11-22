@@ -1,0 +1,9 @@
+image: node:11.0
+before_script:
+  - yarn install
+lint:
+  script:
+    - yarn run lint
+build:
+  script:
+    - yarn run build

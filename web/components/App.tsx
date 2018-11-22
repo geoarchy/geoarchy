@@ -1,9 +1,9 @@
 import React from 'react'
 
 export default ({ children }) => (
-    <main>
-        {children}
-        <style>{`
+  <main>
+    {children}
+    <style>{`
       * {
         font-family: Menlo, Monaco, 'Lucida Console', 'Liberation Mono',
           'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New',
@@ -12,7 +12,7 @@ export default ({ children }) => (
       body {
         margin: 0;
         padding: 25px 50px;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
       }
       a {
         color: #22bad9;
@@ -42,5 +42,5 @@ export default ({ children }) => (
         outline: none;
       }
     `}</style>
-    </main>
+  </main>
 )
