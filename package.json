@@ -13,7 +13,8 @@
       "types"
     ],
     "nohoist": [
-      "web"
+      "web",
+      "api"
     ]
   },
   "scripts": {

@@ -2,7 +2,10 @@ version: '3'
 
 services:
   api:
-    build: ./api
+    build:
+      context: ./
+      args:
+        SERVICE_NAME: api
     depends_on:
       - db
     environment:
@@ -12,12 +15,14 @@ services:
       - M_ACCOUNT_USER=geoarchy
       - M_ACCOUNT_PASS=geoarchy
   web:
-    build: ./web
+    build:
+      context: ./
+      args:
+        SERVICE_NAME: web
     depends_on:
       - api
     environment:
       - NODE_ENV=production
-
   db:
     image: mongo
     environment:
