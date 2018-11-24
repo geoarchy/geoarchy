@@ -7,3 +7,6 @@ lint:
 build:
   script:
     - yarn run build
+start:
+  script:
+    - docker-compose up
