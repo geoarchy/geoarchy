@@ -6,23 +6,27 @@ cache:
   - node_modules/
 
 stages:
+  - install
   - build
   - test
   - deploy
 
-
-before_script:
-  - yarn
-
-lint:
-  stage: build
+install:
+  stage: install
   script:
-    - yarn run lint
+    - yarn
 
 build:
   stage: build
   script:
     - yarn run build
+
+lint:
+  stage: test
+  script:
+    - yarn run lint
+
+
 start:
   stage: deploy
   script:
