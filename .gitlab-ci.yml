@@ -1,12 +1,22 @@
 image: node:11.1
+
+stages:
+  - build
+  - test
+  - deploy
+
+
 before_script:
   - yarn
 lint:
+  stage: build
   script:
     - yarn run lint
 build:
+  stage: build
   script:
     - yarn run build
 start:
+  stage: deploy
   script:
     - docker-compose up
