@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt = require("bcryptjs");
 const utils_1 = require("@geoarchy/utils");
 const utils_2 = require("../utils");
-exports.createAccount = async (parent, args, ctx, info) => {
+exports.createAccount = async (_parent, args, ctx) => {
     const exists = await ctx.db.getAccount({
         email: utils_1.emailString(args.data.email),
     });
@@ -19,7 +19,7 @@ exports.createAccount = async (parent, args, ctx, info) => {
         }),
     };
 };
-exports.login = async (parent, args, ctx, info) => {
+exports.login = async (_parent, args, ctx) => {
     const account = await ctx.db.getAccount({
         email: utils_1.emailString(args.data.email),
     });

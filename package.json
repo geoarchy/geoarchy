@@ -11,11 +11,12 @@
       "packages/*",
       "web",
       "types"
-    ],
-    "nohoist": [
-      "web",
-      "api"
     ]
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": "11.1",
+    "yarn": ""
   },
   "scripts": {
     "lint": "tslint --project",

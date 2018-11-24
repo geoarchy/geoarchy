@@ -1,6 +1,5 @@
 import * as MongoDB from 'mongodb'
-import bcrypt from 'bcrypt'
-import { TMapDisplay } from '../../types'
+import bcrypt from 'bcryptjs'
 
 import { emailString } from '@geoarchy/utils'
 
@@ -34,6 +33,7 @@ export class DataService {
     return new MongoDB.ObjectId(idString)
   }
   urlString(dbName: String): String {
+    console.log(`mongo instance url: ${MONGO_INSTANCE_URL}/${dbName}`)
     return `${MONGO_INSTANCE_URL}/${dbName}`
   }
   hasDuplicates(array) {
@@ -71,15 +71,15 @@ export class DataService {
     })
     return opResult.result
   }
-  async getMapDisplay(data: { id: String }): Promise<TMapDisplay> {
+  async getMapDisplay(data: { id: String }) {
     return this.mapDb.display.findOne({ _id: this.toObjectId(data.id) })
   }
-  async createMapDisplay(data: TMapDisplay): Promise<TMapDisplay> {
+  async createMapDisplay(data) {
     const { insertedId } = await this.mapDb.display.insertOne(data)
 
     return this.mapDb.display.findOne({ _id: insertedId })
   }
-  async updateMapDisplay(data): Promise<TMapDisplay> {
+  async updateMapDisplay(data) {
     if (this.hasDuplicateIds(data.layerGroups)) {
       throw Error('layer group id already exists')
     }
@@ -106,7 +106,8 @@ export class DataService {
             dbConfig.config
           )
           await dbClient.connect()
-          this[dbName] = dbClient.db(dbName)
+
+          this[dbName] = dbClient.db(dbName);
           dbConfig.collections.map(async collectionName => {
             this[dbName][collectionName] = this[dbName].collection(
               collectionName

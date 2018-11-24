@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
-require("dotenv").config({
-    path: path.join(__dirname, "../../.env")
-});
+if (process.env.NODE_ENV == 'production') {
+    require("dotenv").config({
+        path: path.join(__dirname, "../../.env")
+    });
+}
 const graphql_yoga_1 = require("graphql-yoga");
 const resolvers_1 = require("./resolvers");
 const data_service_1 = require("@geoarchy/data-service");
@@ -30,7 +32,7 @@ const server = new graphql_yoga_1.GraphQLServer({
         };
     }
 });
-server.express.post(server.options.endpoint, middleware_1.checkJwt, (err, req, res, next) => {
+server.express.post(server.options.endpoint, middleware_1.checkJwt, (err, _req, res, next) => {
     if (err) {
         console.error("Token error: " + err);
         return res.status(401).send(err.message);

@@ -1,8 +1,11 @@
 import * as path from "path";
 
-require("dotenv").config({
-  path: path.join(__dirname, "../../.env")
-});
+if (process.env.NODE_ENV ! == 'production') {
+  require("dotenv").config({
+    path: path.join(__dirname, "../../.env")
+  });
+}
+
 
 import { GraphQLServer } from "graphql-yoga";
 import { resolvers } from "./resolvers";
@@ -37,7 +40,7 @@ const server = new GraphQLServer({
 server.express.post(
   server.options.endpoint,
   checkJwt,
-  (err, req, res, next) => {
+  (err, _req, res, next) => {
     if (err) {
       console.error("Token error: " + err);
       return res.status(401).send(err.message);

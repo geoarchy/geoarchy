@@ -1,13 +1,42 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
+    "jsx": "preserve",
     "target": "esnext",
     "moduleResolution": "node",
     "module": "commonjs",
     "sourceMap": true,
     "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
     "outDir": "dist",
-    "lib": ["esnext", "dom"]
+    "lib": ["esnext", "dom"],
+    
   },
-  "include": ["src"],
-  "exclude": ["../node_modules/**/*", "node_modules/**"]
+  "newCompilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "lib": ["dom", "esnext"],
+  },
+  "include": [
+    "src", 
+    "../node_modules/@geoarchy/data-service",
+    "../../types"
+  ]
 }
+

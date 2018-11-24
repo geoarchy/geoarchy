@@ -1,2 +1,2 @@
 #! /bin/sh
-node api/dist;
+yarn start ; tail -f package.json

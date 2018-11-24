@@ -4,7 +4,7 @@ import { emailString } from '@geoarchy/utils'
 import { Context } from '../../typings'
 import { getUserData, signToken } from '../utils'
 
-export const createAccount = async (parent, args, ctx: Context, info) => {
+export const createAccount = async (_parent, args, ctx: Context) => {
   const exists = await ctx.db.getAccount({
     email: emailString(args.data.email),
   })
@@ -21,7 +21,7 @@ export const createAccount = async (parent, args, ctx: Context, info) => {
   }
 }
 
-export const login = async (parent, args, ctx, info) => {
+export const login = async (_parent, args, ctx) => {
   const account = await ctx.db.getAccount({
     email: emailString(args.data.email),
   })

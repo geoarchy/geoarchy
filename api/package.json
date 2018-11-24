@@ -2,13 +2,13 @@
   "name": "@geoarchy/api",
   "version": "0.0.1",
   "description": "map ui api",
-  "main": "dist/index.js",
+  "main": "dist/api/src/index.js",
   "license": "MIT",
   "dependencies": {
     "@geoarchy/data-service": "^0.0.1",
     "@geoarchy/utils": "^0.0.1",
-    "bcrypt": "^3.0.2",
     "bcryptjs": "^2.4.3",
+    "dotenv": "^6.1.0",
     "express-jwt": "^5.3.1",
     "graphql": "0.13.2",
     "graphql-cli": "^2.16.5",
@@ -20,14 +20,13 @@
     "jsonwebtoken": "^8.3.0",
     "merge-deep": "^3.0.2",
     "mixin-deep": "^2.0.0",
-    "mongodb": "^3.1.10",
     "node-fetch": "^2.2.0"
   },
   "scripts": {
     "dev": "nodemon -e ts,graphql -x ts-node -r dotenv/config src/index.ts",
-    "start": "node dist",
+    "start": "NODE_ENV=production node dist/api/src",
     "playground": "graphql playground --port 8081",
-    "build": "rm -rf dist && graphql codegen && tsc"
+    "build": "rm -rf dist && graphql codegen && NODE_ENV=production tsc"
   },
   "devDependencies": {
     "@types/node": "^10.12.10",

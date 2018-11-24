@@ -8,9 +8,8 @@
     "clean": "rimraf lib"
   },
   "dependencies": {
-    "aws-sdk": "^2.305.0",
-    "bcrypt": "^3.0.2",
-    "s3-db": "^2.3.1",
+    "mongodb": "3.1.10",
+    "bcryptjs": "^2.4.3",
     "short-uuid": "^3.0.0"
   }
 }

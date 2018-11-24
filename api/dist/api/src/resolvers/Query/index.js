@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.account = (parent, args, ctx, info) => {
+exports.account = (_parent, args, ctx) => {
     return ctx.db.getAccount({ email: args.email });
 };
-exports.map = async (parent, args, ctx, info) => {
+exports.map = async (_parent, args, ctx) => {
     return ctx.db.getMapDisplay({ id: args.id });
 };
 //# sourceMappingURL=index.js.map

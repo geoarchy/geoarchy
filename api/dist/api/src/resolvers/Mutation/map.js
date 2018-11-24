@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createMapDisplay = async (parent, args, ctx) => {
+exports.createMapDisplay = async (_parent, args, ctx) => {
     return ctx.db.createMapDisplay(args.data);
 };
-async function updateMapDisplay(parent, args, ctx) {
+async function updateMapDisplay(_parent, args, ctx) {
     return ctx.db.updateMapDisplay(args.data);
 }
 exports.updateMapDisplay = updateMapDisplay;
@@ -13,7 +13,7 @@ var ItemTypes;
     ItemTypes[ItemTypes["layerGroups"] = 1] = "layerGroups";
     ItemTypes[ItemTypes["themeSetting"] = 2] = "themeSetting";
 })(ItemTypes || (ItemTypes = {}));
-exports.updateMapItem = async (parent, args, ctx) => {
+exports.updateMapItem = async (_parent, args, ctx) => {
     const { mapId, itemType, item, itemOp } = args.data;
     return ctx.mapDb.display.findOneAndUpdate({ _id: mapId }, { [`$${itemOp}`]: { [itemType]: item } });
 };
