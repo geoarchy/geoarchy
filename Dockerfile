@@ -13,6 +13,7 @@ RUN apk add --update alpine-sdk python bash
 COPY . /usr/src/
 RUN yarn install --pure-lockfile
 WORKDIR /usr/src/${SERVICE_NAME}
+RUN yarn build
 
 # Set the working directory for the new image and
 # set the `NODE_ENV` environment variable value to `production`

@@ -18,9 +18,10 @@ services:
       - M_ACCOUNT_PASS=geoarchy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 1m30s
+      interval: 45s
       timeout: 10s
       retries: 3
+
   web:
     build:
       context: ./
@@ -32,19 +33,20 @@ services:
       - api
     environment:
       - NODE_ENV=production
-      - APOLLO_SERVER_URL=http://host.docker.internal:8080
+      - APOLLO_SERVER_URL=http://api:8080
       - APOLLO_BROWSER_URL=http://localhost:8080
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
-      interval: 1m30s
+      interval: 45s
       timeout: 10s
       retries: 3
+
   db:
     image: mongo
     ports:
       - "27017:27017"
     volumes:
-      - ./mongo/data:/data/db #Helps to store MongoDB data in `./mongo/data`
+      - mongo:/data/db #Helps to store MongoDB data in `./mongo/data`
       - ./scripts/init-db.js:/docker-entrypoint-initdb.d/init-db.js
     environment:
       - MONGO_INITDB_ROOT_USERNAME=geoarchy
@@ -54,3 +56,4 @@ services:
 volumes:
   npm-cache:
     external: false
+  mongo:

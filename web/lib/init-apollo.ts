@@ -5,7 +5,7 @@ import fetch from 'isomorphic-unfetch'
 let linkUri = "http://localhost:8080"
 if (process){
   const { APOLLO_BROWSER_URL, APOLLO_SERVER_URL } = process.env
-  let linkUri = APOLLO_BROWSER_URL || "http://localhost:8080"
+  linkUri = APOLLO_BROWSER_URL || linkUri
 
   if (!process.browser) {
     linkUri = APOLLO_SERVER_URL || linkUri
