@@ -6,12 +6,14 @@ stages:
   - deploy
 
 
-before_script:
-  - yarn
+# before_script:
+#   - yarn
+
 lint:
   stage: build
   script:
     - yarn run lint
+
 build:
   stage: build
   script:
