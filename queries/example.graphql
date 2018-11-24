@@ -1,32 +1,51 @@
 # Try to write your query here
 
-fragment mapFields on MapDisplay {
+fragment mapFields on TMapPayload {
+  _id
   options {
-      container
-      style
+    container
+    style
+  }
+  components {
+    _id
+    ariaLabel
+    type
+    region
+  }
+  layerGroups {
+    hideOnLoad
+    label
+    _id
+    layers
+    filters {
+      _id
+      operator
+      defaultWidget
+      on
+      options {
+        value
+        label
+      }
+      defaultWidget
     }
-    components {
-      type
-      region
-    }
-    layerGroups {
-      hideOnLoad
-      label
-      id
-      layers
-    }
+  }
 }
-
-mutation LoginUser {
+mutation CreateUser {
   createUser: createAccount(data: { email: "bob@bob.com", password: "bob" }) {
     account {
-      id
+      _id
+      email
+      mapboxTokenStatus
     }
     token
   }
+}
+mutation LoginUser {
   login: login(data: { email: "bob@bob.com", password: "bob" }) {
     account {
-      id
+      _id
+      email
+      mapboxTokenStatus
     }
     token
   }
@@ -35,31 +54,106 @@ mutation LoginUser {
 mutation CreateMap {
   map: updateMapDisplay(
     data: {
+      _id: "5bd4936b971d028d00ed619f"
       title: "My Embedded Mape"
       options: {
         container: "nj23h4jk23h4"
         style: "mapbox://styles/guanacaste/cjj079axn0aqu2so55fx6ln2x"
       }
+      components: [
+        {
+          _id: "1"
+          type: "MapCompass"
+          region: "bottom-left"
+          ariaLabel: "example"
+        }
+        {
+          _id: "2"
+          type: "MapZoom"
+          region: "bottom-left"
+          ariaLabel: "example"
+        }
+        {
+          _id: "4"
+          type: "StaticLegend"
+          region: "bottom-right"
+          ariaLabel: "example"
+        }
+        {
+          _id: "3"
+          type: "StaticLegend"
+          region: "bottom-right"
+          ariaLabel: "example"
+        }
+      ]
       layerGroups: [
         {
           hideOnLoad: true
           label: "Sectores"
-          id: "group-sectores"
+          _id: "group-sectores"
           layers: ["toggle-sectores", "sectores-nombres"]
+          filters: [
+            {
+              _id: "filter-1"
+              on: "symbol"
+              defaultWidget: "list"
+              options: [
+                { label: "Touristas", value: "turismo" }
+                { label: "Estaciones", value: "estaciones" }
+              ]
+            }
+            {
+              _id: "filter-2"
+              on: "symbol"
+              defaultWidget: "list"
+              options: [
+                { label: "Touristas", value: "turismo" }
+                { label: "Estaciones", value: "estaciones" }
+              ]
+            }
+          ]
+          popup: {
+            centerOnSelect: true
+            fields: {
+              title: "feature.properties.Estación"
+              link: "feature.properties.link"
+              image: "feature.properties.Image"
+              description: "feature.properties.description"
+            }
+          }
         }
         {
           hideOnLoad: true
           label: "Ecosistemas"
-          id: "group-ecosistemas"
+          _id: "group-ecosistemas"
           layers: ["toggle-ecosistemas"]
         }
         {
           hideOnLoad: true
           label: "Turismo"
-          id: "group-turismo"
+          _id: "group-turismo"
           layers: ["toggle-turismo"]
           filters: [
             {
+              _id: "filter-1"
+              on: "symbol"
+              defaultWidget: "list"
+              options: [
+                { label: "Touristas", value: "turismo" }
+                { label: "Estaciones", value: "estaciones" }
+              ]
+            }
+            {
+              _id: "filter-2"
+              on: "symbol"
+              defaultWidget: "list"
+              options: [
+                { label: "Touristas", value: "turismo" }
+                { label: "Estaciones", value: "estaciones" }
+              ]
+            }
+            {
+              _id: "filter-3"
               on: "symbol"
               defaultWidget: "list"
               options: [
@@ -81,7 +175,7 @@ mutation CreateMap {
         {
           hideOnLoad: true
           label: "Unesco"
-          id: "group-unesco"
+          _id: "group-unesco"
           layers: ["toggle-unesco"]
         }
       ]
@@ -92,8 +186,8 @@ mutation CreateMap {
 }
 
 query getMap {
-  map(id: "9bb27349-7510-4c16-b8b6-8e2e181a025f", username: "bob_4@bob.com") {
-    id
+  map(id: "5bd4936b971d028d00ed619f") {
+    _id
     ...mapFields
   }
 }
