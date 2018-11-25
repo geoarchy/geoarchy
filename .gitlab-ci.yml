@@ -1,4 +1,4 @@
-image: node:11.1
+image: alpine-node:11.1
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -7,19 +7,14 @@ cache:
   - "**/node_modules/"
 
 stages:
-  - install
-  - test
+  - setup
   - build
   - deploy
 
 install:
-  stage: install
+  stage: setup
   script:
     - yarn
-
-lint:
-  stage: test
-  script:
     - yarn lint
 
 build:

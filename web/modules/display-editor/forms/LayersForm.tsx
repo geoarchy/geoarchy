@@ -34,7 +34,7 @@ const LayerGroupLayersForm = ({
   layers,
   i,
 }: {
-  layers: [String]
+  layers: String[]
   i: number
 }) => (
   <ActionTray title="Layers" renderActions={() => <AddLayerButton />}>
