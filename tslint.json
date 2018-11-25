@@ -10,6 +10,7 @@
       "check-format",
       "allow-pascal-case"
     ],
-    "jsx-no-lambda": false
+    "jsx-no-lambda": false,
+    "import-name": false
   }
 }

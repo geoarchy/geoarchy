@@ -1,4 +1,4 @@
-import react from 'react'
+import * as React from 'react'
 import { Field } from 'formik'
 import { InputField } from './Fields'
 import { Flex, Button, Label } from 'reakit'

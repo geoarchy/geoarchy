@@ -1,4 +1,4 @@
-import react from 'react'
+import * as React from 'react'
 import { MdMenu, MdCreate } from 'react-icons/md'
 import { withRouter } from 'next/router'
 import { Toolbar, Heading, Avatar, Flex, Tooltip } from 'reakit'

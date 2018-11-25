@@ -38,7 +38,7 @@ const mapFragment = `
   }
 `
 
-export const GET_DISPLAY_QUERY = gql`
+export const GET_DISPLAY_QUERY = graphqlTag`
   query getMap($id: String) {
     map(id: $id) {
       _id
@@ -47,7 +47,7 @@ export const GET_DISPLAY_QUERY = gql`
   }
 `
 
-export const UPDATE_DISPLAY_MUTATION = gql`
+export const UPDATE_DISPLAY_MUTATION = graphqlTag`
   mutation updateMapDisplay($data: TMapDisplay) {
     updateMapDisplay(data: $data) {
       _id

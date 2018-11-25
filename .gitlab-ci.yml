@@ -3,12 +3,13 @@ image: node:11.1
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
-  - node_modules/
+  - "node_modules/"
+  - "**/node_modules/"
 
 stages:
   - install
-  - build
   - test
+  - build
   - deploy
 
 install:
@@ -16,16 +17,15 @@ install:
   script:
     - yarn
 
-build:
-  stage: build
-  script:
-    - yarn run build
-
 lint:
   stage: test
   script:
-    - yarn run lint
+    - yarn lint
 
+build:
+  stage: build
+  script:
+    - yarn build
 
 start:
   stage: deploy

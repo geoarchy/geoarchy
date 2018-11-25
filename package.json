@@ -19,7 +19,7 @@
     "yarn": ""
   },
   "scripts": {
-    "lint": "tslint --project",
+    "lint": "tslint **/*.{ts,tsx,json}",
     "dev": "oao run-script --parallel dev",
     "build": "oao run-script --parallel build",
     "start": "oao run-script --parallel start"

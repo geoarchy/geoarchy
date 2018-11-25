@@ -1,5 +1,5 @@
 import * as React from 'react'
-import styledComponents from 'styled-components'
+import styled from 'styled-components'
 import { Block, Toolbar } from 'reakit'
 import { MdLayers } from 'react-icons/md'
 

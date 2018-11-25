@@ -1,5 +1,5 @@
 import * as React from 'react'
-import styledComponents from 'styled-components'
+import styled from 'styled-components'
 import { Field } from 'formik'
 import { Flex, Label, Button } from 'reakit'
 import { MdAddCircleOutline } from 'react-icons/md'

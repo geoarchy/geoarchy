@@ -1,6 +1,10 @@
 import * as React from 'react'
 import { Formik, Form, InjectedFormikProps } from 'formik'
 import { Flex } from 'reakit'
+
+import { TMapDisplay } from '../../../types'
+
+
 import { ACCESS_TOKEN } from '../../lib/config'
 
 import MapApp from '../map/MapApp'
