@@ -19,7 +19,7 @@
     "yarn": ""
   },
   "scripts": {
-    "lint": "yarn exec tslint -c tslint.json **/*.{ts,tsx,json}",
+    "lint": "yarn exec tslint -c tslint.json **/*.{ts,tsx,json} --exclude **/node_modules/**",
     "dev": "oao run-script --parallel dev",
     "build": "oao run-script --parallel build",
     "start": "oao run-script --parallel start"
