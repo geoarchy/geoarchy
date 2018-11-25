@@ -2,17 +2,19 @@
 FROM mhart/alpine-node:11.1
 
 ARG SERVICE_NAME
-ENV SERVICE_NAME=${SERVICE_NAME}
+ENV SERVICE_NAME=${SERVICE_NAME:-api}
 ENV NODE_ENV="production"
-ENV PATH="./node_modules/.bin:$PATH"
+ENV PATH="./node_modules/.bin:../node_modules/.bin:$PATH"
 
 # Set the working directory, copy dependency management files to the working directory,
 # and install the dependencies
 WORKDIR /usr/src
 RUN apk add --update alpine-sdk python bash
 COPY . /usr/src/
+
 RUN yarn install --pure-lockfile
 WORKDIR /usr/src/${SERVICE_NAME}
+RUN cd /usr/src/${SERVICE_NAME}
 RUN yarn build
 
 # Set the working directory for the new image and

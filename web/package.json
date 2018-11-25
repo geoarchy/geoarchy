@@ -2,9 +2,9 @@
   "name": "@geoarchy/web",
   "version": "0.0.1",
   "scripts": {
-    "dev": "ts-node -r dotenv/config server.ts",
+    "dev": "ts-node -r dotenv/config server",
     "build": "next build && NODE_ENV=production tsc -p server",
-    "start": "NODE_ENV=production PORT=$PORT node server/server"
+    "start": "NODE_ENV=production PORT=$PORT node server"
   },
   "dependencies": {
     "apollo-boost": "^0.1.3",

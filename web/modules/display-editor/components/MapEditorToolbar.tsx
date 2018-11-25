@@ -36,8 +36,8 @@ const MenuItems = [
 const MapEditorToolbar = props => (
   <Tabs.Container style={{ display: 'fixed', left: 0 }}>
     {tabs => (
-      <Flex row>
-        <Flex column backgroundColor="black">
+      <Flex row={true}>
+        <Flex column={true} backgroundColor="black">
           <Tabs>
             {MenuItems.map((menuItem, i) => (
               <Tabs.Tab
@@ -50,18 +50,18 @@ const MapEditorToolbar = props => (
                   icon={menuItem.icon}
                   tooltip={menuItem.tooltip}
                   color={tabs.current === i ? 'black' : 'white'}
-                  fontSize={30}
+                  height={"2rem"}
                 />
               </Tabs.Tab>
             ))}
           </Tabs>
         </Flex>
-        <Flex column>
+        <Flex column={true}>
           <Block padding="1rem .5rem">
             {MenuItems.map((menuItem, i) => (
               <Tabs.Panel key={`tab-panel-${i}`} tab={menuItem.tab} {...tabs}>
                 <Block>
-                  <menuItem.form fade {...props} />
+                  <menuItem.form fade={true} {...props} />
                 </Block>
               </Tabs.Panel>
             ))}

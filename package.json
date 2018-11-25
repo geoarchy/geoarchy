@@ -24,6 +24,17 @@
     "build": "oao run-script --parallel build",
     "start": "oao run-script --parallel start"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "tslint --fix",
+      "git add"
+    ]
+  },
   "devDependencies": {
     "eslint": "^5.4.0",
     "oao": "^1.5.1",
@@ -33,5 +44,9 @@
     "tslint-config-airbnb": "^5.11.1",
     "tslint-config-prettier": "^1.16.0",
     "tslint-react": "^3.6.0"
+  },
+  "dependencies": {
+    "husky": "^1.2.0",
+    "lint-staged": "^8.1.0"
   }
 }

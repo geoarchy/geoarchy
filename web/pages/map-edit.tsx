@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { css, Provider as ThemeProvider } from 'reakit'
-import defaultTheme from 'reakit-theme-default'
+import reakitThemeDefault from 'reakit-theme-default'
 
 import MapApp from '../modules/map/MapApp'
 import MapEditForm from '../modules/display-editor/MapEditForm'
@@ -41,7 +41,8 @@ const EditorTheme = {
     white-space: nowrap;
     justify-content: center;
     text-decoration: none;
-    height: 2.5em;
+    min-height:4rem;
+    height: 3em;
     min-width: 2.5em;
     &.active {
       font-weight: bold;
