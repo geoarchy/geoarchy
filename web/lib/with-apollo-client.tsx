@@ -1,6 +1,6 @@
-import React from 'react'
+import react from 'react'
 import initApollo from './init-apollo'
-import Head from 'next/head'
+import head from 'next/head'
 import { getDataFromTree } from 'react-apollo'
 
 export default App => {

@@ -31,7 +31,7 @@
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
-      "tslint-config-prettier-check ./tslint.json --fix",
+      "tslint --fix",
       "git add"
     ]
   },
@@ -43,7 +43,8 @@
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.11.1",
     "tslint-config-prettier": "^1.16.0",
-    "tslint-react": "^3.6.0"
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.1.6"
   },
   "dependencies": {
     "husky": "^1.2.0",

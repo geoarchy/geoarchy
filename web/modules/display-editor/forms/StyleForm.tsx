@@ -1,4 +1,4 @@
-import React from 'react'
+import react from 'react'
 import { Field } from 'formik'
 import { InputField } from './Fields'
 import { Flex, Button, Label } from 'reakit'
@@ -9,26 +9,26 @@ export default () => (
       <legend>
         <h3>Style</h3>
       </legend>
-      <Flex column>
+      <Flex column={true}>
         <Label htmlFor="style">Typography</Label>
         <Field component={InputField} name="options.style" />
       </Flex>
-      <Flex column>
+      <Flex column={true}>
         <Label htmlFor="style">Zoom</Label>
         <Field component={InputField} name="options.initialZoom" />
       </Flex>
-      <Flex column>
+      <Flex column={true}>
         <Label htmlFor="style">Max Zoom</Label>
         <Field component={InputField} name="options.maxZoom" />
       </Flex>
-      <Flex column>
+      <Flex column={true}>
         <Label htmlFor="style">Min Zoom</Label>
         <Field component={InputField} name="options.minZoom" />
       </Flex>
-      <Flex column>
+      <Flex column={true}>
         <h4>Default Center</h4>
-        <Flex row>
-          <Flex column>
+        <Flex row={true}>
+          <Flex column={true}>
             <Label htmlFor="options.center[0].lat">Latitude:</Label>
             <Field
               component={InputField}
@@ -37,7 +37,7 @@ export default () => (
               defaultValue={30.2}
             />
           </Flex>
-          <Flex column>
+          <Flex column={true}>
             <Label htmlFor="options.center[0.lng]">Longitude:</Label>
             <Field
               component={InputField}

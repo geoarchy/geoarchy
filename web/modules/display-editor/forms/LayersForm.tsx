@@ -1,5 +1,5 @@
 import * as React from 'react'
-import styled from 'styled-components'
+import styledComponents from 'styled-components'
 import { Field } from 'formik'
 import { Flex, Label, Button } from 'reakit'
 import { MdAddCircleOutline } from 'react-icons/md'
@@ -34,14 +34,14 @@ const LayerGroupLayersForm = ({
   layers,
   i,
 }: {
-  layers: Array<String>
+  layers: [String]
   i: number
 }) => (
   <ActionTray title="Layers" renderActions={() => <AddLayerButton />}>
     {layers &&
       layers.map((layer: String, layerId) => (
-        <Flex row>
-          <Flex column>
+        <Flex row={true}>
+          <Flex column={true}>
             <Label htmlFor={`layerGroups[${i}].layers[${layerId}]`}>
               {layer}
             </Label>
@@ -55,7 +55,7 @@ const LayerGroupLayersForm = ({
 const LayerGroupFiltersForm = ({ filters, i }) => (
   <ActionTray title="Filters" renderActions={() => <AddFilterButton />}>
     {filters.map((filter: TLayerFilter, filterId) => (
-      <Flex key={`filter-${filterId}`} column>
+      <Flex key={`filter-${filterId}`} column={true}>
         <Label>
           <strong>{filter.on}</strong>
         </Label>
@@ -83,22 +83,22 @@ export default props => (
         <ActionTray
           key={`layer-group-${layerGroup.label}`}
           name={layerGroup.label}
-          isParent
+          isParent={true}
         >
-          <Flex row>
-            <Flex column>
+          <Flex row={true}>
+            <Flex column={true}>
               <Label htmlFor="style">Label</Label>
               <Field type="text" name={`layerGroups[${i}].label`} />
             </Flex>
-            <Flex column>
+            <Flex column={true}>
               <Label htmlFor="style">ID</Label>
               <Field type="text" name={`layerGroups[${i}].id`} />
             </Flex>
           </Flex>
           <LayerGroupLayersForm i={i} layers={layerGroup.layers} />
-          <Flex row />
+          <Flex row={true} />
           {layerGroup.filters && (
-            <Flex row>
+            <Flex row={true}>
               <LayerGroupFiltersForm i={i} filters={layerGroup.filters} />
             </Flex>
           )}

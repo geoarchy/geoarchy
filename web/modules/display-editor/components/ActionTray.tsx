@@ -1,5 +1,5 @@
 import * as React from 'react'
-import styled from 'styled-components'
+import styledComponents from 'styled-components'
 import { Block, Toolbar } from 'reakit'
 import { MdLayers } from 'react-icons/md'
 
@@ -55,7 +55,7 @@ export default class ActionTray extends React.Component<
           <Toolbar.Content
             align="start"
             width="80%"
-            row
+            row={true}
             gridAutoColumns="max-content"
           >
             <ActionTitle>

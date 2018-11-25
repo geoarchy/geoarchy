@@ -18,7 +18,7 @@ const styles = {
 
 const Header = () => (
   <Toolbar background="black" gutter="8px 16px">
-    <Flex row>
+    <Flex row={true}>
       <Toolbar.Content align="start" gutter="8px 16px">
         <ToolBarButton icon={MdMenu} tooltip="Menu" fontSize={24} />
       </Toolbar.Content>

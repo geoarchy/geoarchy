@@ -1,11 +1,11 @@
 import * as MongoDB from 'mongodb'
-import bcrypt from 'bcryptjs'
+import bcryptjs from 'bcryptjs'
 
 import { emailString } from '@geoarchy/utils'
 
 const { MONGO_INSTANCE_URL, M_ACCOUNT_USER, M_ACCOUNT_PASS } = process.env
 
-export const hashPass = async password => await bcrypt.hash(password, 10)
+export const hashPass = async password => await bcryptjs.hash(password, 10)
 
 const globalConfig = {
   auth: { user: M_ACCOUNT_USER, password: M_ACCOUNT_PASS },
@@ -54,11 +54,11 @@ export class DataService {
    */
   async updateDoc(db = 'mapDb', collectionPath = 'display', data: any) {
     const { _id: stringId, ...dataToUpdate } = data
-    const _id = this.toObjectId(stringId)
-    await this[db][collectionPath].updateOne({ _id }, { $set: dataToUpdate })
+    const objId = this.toObjectId(stringId)
+    await this[db][collectionPath].updateOne({ _id: objId }, { $set: dataToUpdate })
 
     return this[db][collectionPath].findOne({
-      _id,
+      _id: objId,
     })
   }
   async getAccount(data): Promise<MongoDB.AggregationCursorResult> {

@@ -1,6 +1,6 @@
 import * as React from 'react'
-import Link from 'next/link'
-import Head from 'next/head'
+import link from 'next/link'
+import head from 'next/head'
 
 interface LayoutProps {
   title: String

@@ -1,5 +1,5 @@
 import { ApolloClient, InMemoryCache, HttpLink } from 'apollo-boost'
-import fetch from 'isomorphic-unfetch'
+import isomorphicUnfetch from 'isomorphic-unfetch'
 
 
 let linkUri = "http://localhost:8080"

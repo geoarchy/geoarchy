@@ -55,8 +55,7 @@ const EditorTheme = {
 
 export default (props: MapEditPageProps) => {
   return (
-    <MapApp>
-      <ThemeProvider theme={{ ...defaultTheme, ...EditorTheme }}>
+    <MapApp><ThemeProvider theme={{ ...reakitThemeDefault, ...EditorTheme }}>
         <MapEditForm displayId={props.router && props.router.query.id} />
       </ThemeProvider>
     </MapApp>

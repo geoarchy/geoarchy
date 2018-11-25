@@ -60,8 +60,8 @@ class MapEditForm extends React.Component<MapEditFormProps, MapEditFormState> {
           // const unsaved = !this.state.saved || props.dirty
           // const unpublished = !this.state.published || unsaved
           return (
-            <Flex row>
-              <Flex minWidth="500px" height="100vh" column>
+            <Flex row={true}>
+              <Flex minWidth="500px" height="100vh" column={true}>
                 <Header />
                 <div
                   style={{
@@ -70,15 +70,15 @@ class MapEditForm extends React.Component<MapEditFormProps, MapEditFormState> {
                   }}
                 >
                   <Form className="map-edit">
-                    <Flex column>
-                      <Flex row>
+                    <Flex column={true}>
+                      <Flex row={true}>
                         <MapEditorToolbar values={props.values} />
                       </Flex>
                     </Flex>
                   </Form>
                 </div>
               </Flex>
-              <Flex column width="100%">
+              <Flex column={true} width="100%">
                 <MapDisplay
                   displayId={props.displayId}
                   loading={this.props.loading}

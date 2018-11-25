@@ -51,6 +51,7 @@ const MapEditorToolbar = props => (
                   tooltip={menuItem.tooltip}
                   color={tabs.current === i ? 'black' : 'white'}
                   height={"2rem"}
+                  fontSize={28}
                 />
               </Tabs.Tab>
             ))}

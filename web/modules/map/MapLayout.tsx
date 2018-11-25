@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import Head from 'next/head'
+import head from 'next/head'
 
 interface LayoutProps {
   title: String
