@@ -2,6 +2,7 @@ version: '3'
 
 services:
   api:
+  image: registry.gitlab.com/solidamus/geoarchy/api:latest
     build:
       context: ./
       args:
@@ -23,6 +24,7 @@ services:
       retries: 3
 
   web:
+    image: registry.gitlab.com/solidamus/geoarchy/web:latest
     build:
       context: ./
       args:
